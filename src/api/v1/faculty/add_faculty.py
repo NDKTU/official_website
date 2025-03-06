@@ -6,23 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.base.db import get_db
 from src.models import Faculty
 from src.schemas.faculty import FacultyCreateRequest
-
+from src.api.v1.services.uploud_img import save_file
 router = APIRouter()
 
-UPLOAD_DIR = "uploads/"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-
-async def save_file(file: UploadFile) -> str:
-    if file:
-        filename = f"{uuid4()}_{file.filename}"
-        filepath = os.path.join(UPLOAD_DIR, filename)
-
-        with open(filepath, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
-        return filepath
-    return None
 
 
 @router.post('/add_faculty')

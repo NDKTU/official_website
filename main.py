@@ -1,14 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
-
 from src.api.v1 import api_v1_router
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 app=FastAPI()
-
+# import sy
+# insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 app.include_router(api_v1_router)
-# app.mount("/storage", StaticFiles(directory="storage"), name="storage")
+
 if __name__=='__main__':
     uvicorn.run('main:app', host='127.0.0.2', port=8000, reload=True)
 
