@@ -26,5 +26,4 @@ async def delete_category(category_id: int,
 
     return dict(
         message=f"{category.name_uz}  o'chirildi",
-
     )

@@ -9,9 +9,6 @@ from src.schemas.faculty import FacultyCreateRequest
 from src.api.v1.services.uploud_img import save_file
 router = APIRouter()
 
-
-
-
 @router.post('/add_faculty')
 async def add_faculty(
         # create_faculty: FacultyCreateRequest=None,
