@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-
+from sqlalchemy.orm import relationship
 
 from src.base.db import Base
 
@@ -12,4 +12,5 @@ class Faculty(Base):
     name_ru=Column(String, nullable=False)
     name_en=Column(String, nullable=False)
     faculty_icon=Column(String, nullable=True)
+    department = relationship("Department", back_populates="faculty")
 

@@ -3,7 +3,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
-from src.models import Category
+from src.models import Category, User
+from src.security import get_current_user, has_access
 
 router = APIRouter()
 

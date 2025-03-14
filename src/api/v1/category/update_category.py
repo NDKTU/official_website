@@ -10,21 +10,25 @@ from src.security import has_access, get_current_user
 
 router = APIRouter()
 
-@router.delete('/delete_category/{category_id}')
+
+@router.put("/update_category/{category_id}")
 @has_access(roles=['admin'])
-async def delete_category(category_id: int,
+async def update_category(category_id: int,
+                      category_data: CategoryCreateRequest,
                       current_user: User = Depends(get_current_user),
                       db: AsyncSession = Depends(get_db)):
-    # if current_user is None:
-    #     raise UnRegisteredException
-
     result = await db.execute(select(Category).where(category_id == Category.id))
-    category = result.scalars().one_or_none()
-    if category is None:
-        raise HTTPException(status_code=404, detail="Bunaqa Kategoriya mavjud emas")
-    await db.delete(category)
-    await db.commit()
+    category: Category = result.scalars().one_or_none()
 
-    return dict(
-        message=f"{category.name_uz}  o'chirildi",
-    )
+    if category is None:
+        raise HTTPException(status_code=404, detail="Kitob topilmadi")
+
+    category.name_uz = category_data.name_uz
+    category.name_ru = category_data.name_ru
+    category.name_en = category_data.name_en
+
+
+    await db.commit()
+    await db.refresh(category)
+
+    return {"message": "Kategory muvaffaqiyatli yangilandi"}

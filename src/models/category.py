@@ -11,3 +11,5 @@ class Category(Base):
     name_uz=Column(String, nullable=False)
     name_ru=Column(String, nullable=False)
     name_en=Column(String, nullable=False)
+
+    page = relationship("Page", back_populates="category")
