@@ -1,0 +1,22 @@
+
+from pydantic import BaseModel
+
+
+class CategoryBase(BaseModel):
+    name_uz: str
+    name_ru: str
+    name_en: str
+    faculty_id: int
+
+
+
+class CategoryCreateRequest(CategoryBase):
+    class Config:
+        from_attributes = True
+
+
+class CategoryCreateResponse(CategoryBase):
+    id: int
+
+    class Config:
+        from_attributes = True

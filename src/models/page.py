@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 
@@ -16,7 +18,7 @@ class Page(Base):
     text_uz=Column(String, nullable=False)
     text_ru=Column(String, nullable=False)
     text_en=Column(String, nullable=False)
-    time = Column(DateTime, default=func.now())
-    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    time = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
 
     category = relationship("Category", back_populates="page")

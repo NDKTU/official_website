@@ -4,11 +4,14 @@ from uuid import uuid4
 from fastapi import UploadFile, File
 from pathlib import Path
 
-UPLOAD_DIR = "uploads/"
+from rich.ansi import console
+
+UPLOAD_DIR = "upload_files/"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-async def save_file(file: UploadFile) -> str:
+async def save_file_upload(file: UploadFile) -> str:
+    # print("Qabul qilingan save_file_upload:", file)
     if file:
         filename = f"{uuid4()}_{file.filename}"
         filepath = os.path.join(UPLOAD_DIR, filename)

@@ -1,11 +1,10 @@
 import os
 import shutil
 from uuid import uuid4
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.base.db import get_db
 from src.models import Faculty, User
-from src.schemas.faculty import FacultyCreateRequest
 from src.api.v1.services.uploud_img import save_file
 from src.security import get_current_user, has_access
 
@@ -15,19 +14,20 @@ router = APIRouter()
 @has_access(roles=['admin'])
 async def add_faculty(
 
-        name_uz: str = None,
-        name_ru: str = None,
-        name_en: str = None,
-        file: UploadFile = File(None),
+        name_uz: str = Form(...),
+        name_ru: str = Form(...),
+        name_en: str = Form(...),
+        faculty_icon: UploadFile = File(None),
         current_user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db)):
     try:
-
+        icon_path = await save_file(faculty_icon) if faculty_icon else None
         new_faculty = Faculty(
             name_uz=name_uz,
             name_ru=name_ru,
             name_en=name_en,
-            faculty_icon=await save_file(file)
+            # faculty_icon=await save_file(faculty_icon)
+            faculty_icon=icon_path
 
         )
 

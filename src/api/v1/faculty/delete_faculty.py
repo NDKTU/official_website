@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
 from src.models import  User, Faculty
-from src.schemas.category import CategoryCreateRequest
 from src.security import has_access, get_current_user
 
 router = APIRouter()

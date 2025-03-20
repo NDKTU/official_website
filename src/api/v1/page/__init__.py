@@ -1,0 +1,20 @@
+from fastapi import APIRouter
+
+
+page_router = APIRouter(prefix='/page', tags=['Page'])
+
+
+from src.api.v1.page.add import router as add_router
+from src.api.v1.page.get_all import router as get_all_router
+from src.api.v1.page.get_detail import router as get_detail_router
+from src.api.v1.page.delete import router as delete_router
+from src.api.v1.page.update import router as update_router
+
+
+
+page_router.include_router(add_router)
+page_router.include_router(get_all_router)
+page_router.include_router(get_detail_router)
+page_router.include_router(delete_router)
+page_router.include_router(update_router)
+

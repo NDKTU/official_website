@@ -14,6 +14,7 @@ class PageBase(BaseModel):
     text_ru: str
     text_en: str
     time: datetime
+    category_id: int
 
 
 
