@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.put("/update_page/{page_id}")
-@has_access(roles=['admin'])
+# @has_access(roles=['admin'])
 async def update_page(page_id: int,
                       page_data: PageCreateRequest,
                       current_user: User = Depends(get_current_user),

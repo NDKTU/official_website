@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -13,7 +14,7 @@ class PageBase(BaseModel):
     text_uz: str
     text_ru: str
     text_en: str
-    time: datetime
+    time: Optional[datetime] = None
     category_id: int
 
 

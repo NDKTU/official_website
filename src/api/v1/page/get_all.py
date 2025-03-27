@@ -24,7 +24,7 @@ async def get_page(db: AsyncSession = Depends(get_db)):
                Page.text_en.label('text_en'),
                Page.time.label('time'),
                Category.name_uz.label('category_name_uz'),
-               ).join(Category)
+               ).outerjoin(Category)
     )
 
     results = stmt.fetchall()
@@ -43,6 +43,7 @@ async def get_page(db: AsyncSession = Depends(get_db)):
             page_text_en=item.text_en,
             page_time=item.time,
             category_name_uz=item.category_name_uz
+            # category_name_uz=item.category_name_uz
         )
         for item in results
     ]
