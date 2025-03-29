@@ -9,7 +9,7 @@ app.include_router(api_v1_router)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.mount("/upload_files", StaticFiles(directory="upload_files"), name="upload_files")
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8000)
+    uvicorn.run('main:app', host='127.0.0.2', port=8000)
 
 app.add_middleware(
     CORSMiddleware,
