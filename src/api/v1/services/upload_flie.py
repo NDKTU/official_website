@@ -33,7 +33,8 @@ async def upload_file_func(
         db.add(new_file)
         await db.commit()
         await db.refresh(new_file)
-        file_url = f"http://127.0.0.2:8000/{file_path}"
+        # file_url = f"http://127.0.0.2:8000/{file_path}"
+        file_url = f"http://zaynidinov.uz:51432/{file_path}"
         # return {"message": "File muvaffaqiyatli yaratildi"}
         return JSONResponse(content={"file_url": file_url}, status_code=200)
     except Exception as e:
