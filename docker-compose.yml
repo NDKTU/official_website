@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=nsumt
+      - DB_USER=ahror2230
+      - DB_PASSWORD=ahror2230
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=ahror2230
+      - POSTGRES_PASSWORD=ahror2230
+      - POSTGRES_DB=nsumt
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
