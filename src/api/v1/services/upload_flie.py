@@ -8,6 +8,8 @@ from src.models import User, Uploads
 from src.security import get_current_user, has_access
 from fastapi.responses import JSONResponse
 from fastapi import Request
+import os
+from dotenv import load_dotenv
 router = APIRouter()
 
 
@@ -34,7 +36,8 @@ async def upload_file_func(
         await db.commit()
         await db.refresh(new_file)
         # file_url = f"http://127.0.0.2:8000/{file_path}"
-        file_url = f"http://zaynidinov.uz:51432/{file_path}"
+        # file_url = f"http://zaynidinov.uz:51432/{file_path}"
+        file_url = f"{os.getenv('URL')}/{file_path}"
         # return {"message": "File muvaffaqiyatli yaratildi"}
         return JSONResponse(content={"file_url": file_url}, status_code=200)
     except Exception as e:
