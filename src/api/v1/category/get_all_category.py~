@@ -16,7 +16,7 @@ async def get_category(db: AsyncSession = Depends(get_db)):
                Category.name_uz.label('name_uz'),
                Category.name_ru.label('name_ru'),
                Category.name_en.label('name_en')
-               ).order_by(Category.id)
+               )
     )
 
     results = stmt.fetchall()
