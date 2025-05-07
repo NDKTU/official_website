@@ -13,3 +13,4 @@ class Category(Base):
     name_en=Column(String, nullable=False)
 
     page = relationship("Page", back_populates="category")
+    # section=relationship("Section", back_populates="category")
