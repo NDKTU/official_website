@@ -13,12 +13,11 @@ if __name__ == '__main__':
 
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # Test uchun; keyin frontend URLni qo‘shing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_origins=[
-        "https://api.nsumt.uz",
+        "https://dashboard.nsumt.uz",
         "http://localhost:5173",
         "http://localhost:5174",
 
