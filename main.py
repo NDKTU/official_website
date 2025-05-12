@@ -18,7 +18,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
     allow_origins=[
-        "https://api.nsumt.uz/",
+        "https://api.nsumt.uz",
         "http://localhost:5173",
         "http://localhost:5174",
 
