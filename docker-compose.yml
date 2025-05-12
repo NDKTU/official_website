@@ -30,8 +30,8 @@ services:
     image: nginx:latest
     ports:
       - "80:80"  # Nginx tashqi so'rovlarni 80-portda qabul qiladi
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf  # nginx.conf faylini konteynerga ulaymiz
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # nginx.conf faylini konteynerga ulaymiz
     depends_on:
       - app
 
