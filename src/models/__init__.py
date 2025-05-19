@@ -4,3 +4,4 @@ from .user import User
 from .department import Department
 from .page import Page
 from .uploads import Uploads
+from .news import News
