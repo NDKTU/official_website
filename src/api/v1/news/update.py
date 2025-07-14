@@ -5,23 +5,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.api.v1.services.uploud_img import save_file
 from src.base.db import get_db
 from src.models import User, News
-from src.schemas.news import NewsCreateRequest
+
 from src.security import get_current_user
 
 router = APIRouter()
 
 
 @router.put('/update_new/{new_id}')
-async def update_news(new_id: int,
-                      title_uz: str = Form(...),
-                      title_ru: str = Form(...),
-                      title_en: str = Form(...),
-                      text_uz: str = Form(...),
-                      text_ru: str = Form(...),
-                      text_en: str = Form(...),
-                      photo: UploadFile = File(None),
-                      db: AsyncSession = Depends(get_db),
-                      current_user: User = Depends(get_current_user),
+async def update_news(
+    new_id: int,
+    title_uz: str = Form(...),
+    title_ru: str = Form(...),
+    title_en: str = Form(...),
+    text_uz: str = Form(...),
+    text_ru: str = Form(...),
+    text_en: str = Form(...),
+    photo: UploadFile = File(None),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
                       ):
     result = await db.execute(select(News).where(new_id == News.id))
     new = result.scalars().one_or_none()
@@ -43,5 +44,5 @@ async def update_news(new_id: int,
         await db.commit()
         await db.refresh(new)
         return {"message": "Yangilik muvaffaqiyatli yangilandi"}
-    except Exception as e:
+    except Exception:
         return {"Yuklashda xatolik"}

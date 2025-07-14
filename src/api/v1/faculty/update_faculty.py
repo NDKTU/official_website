@@ -12,14 +12,16 @@ router = APIRouter()
 
 @router.put("/update_faculty/{faculty_id}")
 @has_access(roles=['admin'])
-async def update_faculty(faculty_id: int,
-                         name_uz: str = Form(...),
-                         name_ru: str = Form(...),
-                         name_en: str = Form(...),
-                         faculty_icon: UploadFile = File(None),
-                         # faculty_file: UploadFile = File(None),
-                         current_user: User = Depends(get_current_user),
-                         db: AsyncSession = Depends(get_db)):
+async def update_faculty(
+    faculty_id: int,
+    name_uz: str = Form(...),
+    name_ru: str = Form(...),
+    name_en: str = Form(...),
+    faculty_icon: UploadFile = File(None),
+    # faculty_file: UploadFile = File(None),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)):
+    
     result = await db.execute(select(Faculty).where(faculty_id == Faculty.id))
     faculty: Faculty = result.scalars().one_or_none()
 
@@ -40,5 +42,5 @@ async def update_faculty(faculty_id: int,
         await db.refresh(faculty)
 
         return {"message": "Fakultet muvaffaqiyatli yangilandi"}
-    except Exception as e:
+    except Exception:
         return {"Yuklashda xatolik"}

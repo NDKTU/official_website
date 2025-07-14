@@ -1,17 +1,11 @@
 from datetime import datetime, timezone
 
-from typing import Optional
-
-from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, Form, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.v1.services.uploud_img import save_file
 from src.base.db import get_db
-from src.models import User, Department, Page, News
-from src.schemas.department import DepartmentCreateRequest
-from src.schemas.news import NewsCreateRequest
-from src.schemas.page import PageCreateRequest
+from src.models import User, News
 from src.security import get_current_user, has_access
 
 router = APIRouter()

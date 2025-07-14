@@ -11,9 +11,11 @@ router = APIRouter()
 
 @router.post('/add_department')
 @has_access(roles=['admin'])
-async def add_category(create_department: DepartmentCreateRequest,
-                       current_user: User = Depends(get_current_user),
-                       db: AsyncSession = Depends(get_db)):
+async def add_category(
+    create_department: DepartmentCreateRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+    ):
     new_department = Department(
         name_uz=create_department.name_uz,
         name_ru=create_department.name_ru,

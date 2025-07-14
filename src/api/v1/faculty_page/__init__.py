@@ -7,10 +7,7 @@ from src.api.v1.page.delete import router as delete_router
 from src.api.v1.page.update import router as update_router
 
 
-page_router = APIRouter(prefix='/page', tags=['Page'])
-
-
-
+page_router = APIRouter(prefix='/faculty_page', tags=['Faculty Page'])
 
 
 

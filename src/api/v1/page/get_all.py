@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from unicodedata import category
-
 from src.base.db import get_db
-from src.models import Department, Faculty, Page, Category
+from src.models import Page, Category
 
 router = APIRouter()
 

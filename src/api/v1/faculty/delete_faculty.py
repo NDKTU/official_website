@@ -11,9 +11,11 @@ router = APIRouter()
 
 @router.delete('/delete_faculty/{faculty_id}')
 @has_access(roles=['admin'])
-async def delete_faculty(faculty_id: int,
-                      current_user: User = Depends(get_current_user),
-                      db: AsyncSession = Depends(get_db)):
+async def delete_faculty(
+    faculty_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)):
+    
     # if current_user is None:
     #     raise UnRegisteredException
 

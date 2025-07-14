@@ -1,7 +1,4 @@
-import os
-import shutil
-from uuid import uuid4
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
+from fastapi import APIRouter, Depends, UploadFile, File,  Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.base.db import get_db
 from src.models import Faculty, User
@@ -13,7 +10,6 @@ router = APIRouter()
 @router.post('/add_faculty')
 @has_access(roles=['admin'])
 async def add_faculty(
-
         name_uz: str = Form(...),
         name_ru: str = Form(...),
         name_en: str = Form(...),
@@ -35,5 +31,5 @@ async def add_faculty(
         await db.commit()
         await db.refresh(new_faculty)
         return {"message": "Facultet muvaffaqiyatli yaratildi"}
-    except Exception as e:
+    except Exception:
         return {"Yuklashda xatolik"}

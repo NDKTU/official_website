@@ -4,16 +4,19 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
-from src.models import Category, User, Department
+from src.models import  User, Department
 from src.security import has_access, get_current_user
 
 router = APIRouter()
 
 @router.delete('/delete_department/{department_id}')
 @has_access(roles=['admin'])
-async def delete_department(department_id: int,
-                      current_user: User = Depends(get_current_user),
-                      db: AsyncSession = Depends(get_db)):
+async def delete_department(
+    department_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+    ):
+    
     # if current_user is None:
     #     raise UnRegisteredException
 
