@@ -16,7 +16,7 @@ router = APIRouter()
 async def update_page(
     faculty_page_id: int,
     faculty_page_data: FacultyPageCreateRequest,
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
     ):
     

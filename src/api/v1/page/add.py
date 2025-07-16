@@ -14,7 +14,7 @@ router = APIRouter()
 @has_access(roles=['admin'])
 async def add_page(
     create_page: PageCreateRequest,
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
     ):
     result = await db.execute(select(Page).where(create_page.name_uz == Page.name_uz))

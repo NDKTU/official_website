@@ -13,7 +13,7 @@ router = APIRouter()
 @has_access(roles=['admin'])
 async def delete_page(
     page_id: int,
-    _ : User = Depends(get_current_user),
+        current_user : User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)):
 
 

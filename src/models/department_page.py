@@ -6,7 +6,6 @@ from src.base.db import Base
 
 class DepartmentPage(Base):
     __tablename__ = 'department_pages'
-
     id = Column(Integer, primary_key=True)
     name_uz = Column(String, nullable=False)
     name_ru = Column(String, nullable=False)

@@ -16,7 +16,7 @@ router = APIRouter()
 async def update_page(
     page_id: int,
     page_data: PageCreateRequest,
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
     ):
     result = await db.execute(select(Page).where(page_id == Page.id))
