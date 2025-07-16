@@ -7,13 +7,13 @@ from src.api.v1.page.delete import router as delete_router
 from src.api.v1.page.update import router as update_router
 
 
-page_router = APIRouter(prefix='/department_page', tags=['Department Page'])
+department_page_router = APIRouter(prefix='/department_page', tags=['Department Page'])
 
 
 
-page_router.include_router(add_router)
-page_router.include_router(get_all_router)
-page_router.include_router(get_detail_router)
-page_router.include_router(delete_router)
-page_router.include_router(update_router)
+department_page_router.include_router(add_router)
+department_page_router.include_router(get_all_router)
+department_page_router.include_router(get_detail_router)
+department_page_router.include_router(delete_router)
+department_page_router.include_router(update_router)
 
