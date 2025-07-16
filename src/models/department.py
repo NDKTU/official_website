@@ -11,7 +11,6 @@ class Department(Base):
     name_ru = Column(String, nullable=False)
     name_en = Column(String, nullable=False)
     faculty_id = Column(Integer, ForeignKey("faculties.id"), nullable=False)
-
     faculty = relationship("Faculty", back_populates="department")
 
     department_page = relationship(
