@@ -19,6 +19,7 @@ async def get_news(db: AsyncSession = Depends(get_db)):
             News.text_ru.label('text_ru'),
             News.text_en.label('text_en'),
             News.time.label('news_time'),
+            News.photo.label('photo')
         )
         .order_by(News.id.desc())
     )
@@ -33,7 +34,8 @@ async def get_news(db: AsyncSession = Depends(get_db)):
             text_uz=item.text_uz,
             text_ru=item.text_ru,
             text_en=item.text_en,
-            news_time=item.news_time
+            news_time=item.news_time,
+            photo=item.photo
         )
         for item in results
     ]
