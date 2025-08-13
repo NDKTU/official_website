@@ -19,8 +19,8 @@ app.add_middleware(
     allow_origins=[
         "https://dashboard.nsumt.uz",
         "https://www.dashboard.nsumt.uz",
-        "https://new.nsumt.uz",
-        "https://www.new.nsumt.uz",
+        "https://nsumt.uz",
+        "https://www.nsumt.uz",
         "http://localhost:5173",
         "http://localhost:5174",
 
