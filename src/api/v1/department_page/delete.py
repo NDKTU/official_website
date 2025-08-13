@@ -15,8 +15,6 @@ async def delete_page(
     department_page_id: int,
         current_user : User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)):
-
-
     result = await db.execute(select(DepartmentPage).where(department_page_id == DepartmentPage.id))
     page = result.scalars().one_or_none()
     if page is None:
