@@ -20,6 +20,7 @@ async def get_news(db: AsyncSession = Depends(get_db)):
             News.text_en.label('text_en'),
             News.time.label('news_time'),
         )
+        .order_by(News.id.desc())
     )
     results = stmt.fetchall()
 
