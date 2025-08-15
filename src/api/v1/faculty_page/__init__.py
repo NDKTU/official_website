@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
-from src.api.v1.page.add import router as add_router
-from src.api.v1.page.get_all import router as get_all_router
-from src.api.v1.page.get_detail import router as get_detail_router
-from src.api.v1.page.delete import router as delete_router
-from src.api.v1.page.update import router as update_router
+from src.api.v1.faculty_page.add import router as add_router
+from src.api.v1.faculty_page.get_all import router as get_all_router
+from src.api.v1.faculty_page.get_detail import router as get_detail_router
+from src.api.v1.faculty_page.delete import router as delete_router
+from src.api.v1.faculty_page.update import router as update_router
 
 
 faculty_page_router = APIRouter(prefix='/faculty_page', tags=['Faculty Page'])
