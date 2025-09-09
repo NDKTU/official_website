@@ -17,8 +17,8 @@ async def add_page(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
     ):
-    result = await db.execute(select(Page).where(create_page.name_uz == Page.name_uz))
-    page = result.scalars().one_or_none()
+    # result = await db.execute(select(Page).where(create_page.name_uz == Page.name_uz))
+    # page = result.scalars().one_or_none()
 
     # if page:
     #     raise HTTPException(status_code=404, detail="Bunaqa page mavjud")
