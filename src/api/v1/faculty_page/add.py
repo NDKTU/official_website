@@ -20,8 +20,8 @@ async def add_page(
     result = await db.execute(select(FacultyPage).where(create_faculty_page.name_uz == FacultyPage.name_uz))
     page = result.scalars().one_or_none()
 
-    if page:
-        raise HTTPException(status_code=404, detail="Bunaqa page mavjud")
+    # if page:
+    #     raise HTTPException(status_code=404, detail="Bunaqa page mavjud")
 
     new_faculty_page = FacultyPage(
         name_uz=create_faculty_page.name_uz,
