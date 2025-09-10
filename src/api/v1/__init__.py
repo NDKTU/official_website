@@ -8,6 +8,7 @@ from .services import upload_router
 from .news import news_router
 from .department_page import department_page_router
 from .faculty_page import faculty_page_router
+from .apply import apply_router
 
 api_v1_router = APIRouter(prefix='/v1')
 
@@ -21,3 +22,4 @@ api_v1_router.include_router(upload_router)
 api_v1_router.include_router(news_router)
 api_v1_router.include_router(department_page_router)
 api_v1_router.include_router(faculty_page_router)
+api_v1_router.include_router(apply_router)

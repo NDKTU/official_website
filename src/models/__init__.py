@@ -8,6 +8,7 @@ __all__ = (
     "News",
     "FacultyPage",
     "DepartmentPage",
+    "Apply"
 )
 
 from .category import Category
@@ -19,3 +20,4 @@ from .uploads import Uploads
 from .news import News
 from .faculty_page import FacultyPage
 from .department_page import DepartmentPage
+from .apply import Apply
