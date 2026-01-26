@@ -1,8 +1,6 @@
-# models/faculty.py
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from src.base.db import Base
-
 
 class Faculty(Base):
     __tablename__ = 'faculties'
@@ -14,6 +12,7 @@ class Faculty(Base):
     faculty_icon = Column(String, nullable=True)
 
     department = relationship("Department", back_populates="faculty")
-
+    
+    agencies = relationship("Agency", back_populates="faculty")
 
     faculty_page = relationship("FacultyPage", back_populates="faculty")
