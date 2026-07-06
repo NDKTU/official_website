@@ -42,5 +42,7 @@ async def update_faculty(
         await db.refresh(faculty)
 
         return {"message": "Fakultet muvaffaqiyatli yangilandi"}
+    except HTTPException:
+        raise
     except Exception:
         return {"Yuklashda xatolik"}

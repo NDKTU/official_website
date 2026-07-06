@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings
 load_dotenv()
 
 class Settings(BaseSettings):
+    ENV: str = os.getenv('ENV', 'development')
+
     DB_USER: str = os.getenv('DB_USER')
     DB_HOST: str = os.getenv('DB_HOST')
     DB_PASSWORD: str = os.getenv('DB_PASSWORD')

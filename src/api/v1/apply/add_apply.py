@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timezone
 from src.base.db import get_db
-from src.models import  Apply
+from src.models import  Apply, User
 from src.schemas.apply import ApplyCreateRequest
 from src.schemas.category import CategoryCreateRequest
 from src.security import get_current_user, has_access
@@ -11,9 +11,9 @@ router = APIRouter()
 
 
 @router.post('/add_category')
-# @has_access(roles=['admin'])
+@has_access(roles=['admin'])
 async def add_category(create_apply: ApplyCreateRequest,
-                       # current_user: User = Depends(get_current_user),
+                       current_user: User = Depends(get_current_user),
                        db: AsyncSession = Depends(get_db)):
     time_parsed = datetime.now(timezone.utc)
     new_apply = Apply(

@@ -44,5 +44,7 @@ async def update_news(
         await db.commit()
         await db.refresh(new)
         return {"message": "Yangilik muvaffaqiyatli yangilandi"}
+    except HTTPException:
+        raise
     except Exception:
         return {"Yuklashda xatolik"}

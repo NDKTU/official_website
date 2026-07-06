@@ -5,12 +5,15 @@ from src.base.db import get_db
 from src.exceptions import AlreadyRegisteredException
 from src.models import User
 from src.schemas.user import UserCreateRequest, UserCreateResponse
+from src.security import get_current_user, has_access
 
 router = APIRouter()
 
 
 @router.post('/register')
+@has_access(roles=['admin'])
 async def register(create_user: UserCreateRequest,
+                       current_user: User = Depends(get_current_user),
                        db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(create_user.username == User.username))
     user = result.scalars().one_or_none()
