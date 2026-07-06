@@ -177,3 +177,5 @@ uploads/
 
 # PyPI configuration file
 .pypirc
+
+upload_files/
