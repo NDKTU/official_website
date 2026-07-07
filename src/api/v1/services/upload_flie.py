@@ -5,7 +5,7 @@ from src.api.v1.services.file_services import save_file_upload, UPLOAD_DIR
 from src.base.db import get_db
 from src.models import User, Uploads
 # from src.api.v1.services.uploud_img import save_file
-from src.security import get_current_user
+# from src.security import get_current_user
 from fastapi.responses import JSONResponse
 from fastapi import Request
 import os
@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post("/upload")
 async def upload_file_func(
     upload_file: UploadFile = File(...),   # frontend "upload_file" nomi bilan yuboradi
-    current_user: User = Depends(get_current_user),
+    # current_user: User = Depends(get_current_user),  # TEMP: auth vaqtincha o'chirildi, frontend tuzatilgach qaytariladi
     db: AsyncSession = Depends(get_db)
 ):
     try:
