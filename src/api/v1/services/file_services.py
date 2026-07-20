@@ -6,9 +6,19 @@ from pathlib import Path
 UPLOAD_DIR = "upload_files/"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".pdf"}
+ALLOWED_EXTENSIONS = {
+    ".jpg", ".jpeg", ".png", ".gif", ".webp", ".pdf",
+    ".xls", ".xlsx", ".xlsm", ".doc", ".docx", ".ppt", ".pptx",
+}
 ALLOWED_CONTENT_TYPES = {
     "image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel.sheet.macroEnabled.12",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 }
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
 CHUNK_SIZE = 1024 * 1024  # 1MB
