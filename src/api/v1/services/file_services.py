@@ -20,7 +20,7 @@ ALLOWED_CONTENT_TYPES = {
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 }
-MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
+MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50 MiB
 CHUNK_SIZE = 1024 * 1024  # 1MB
 
 
