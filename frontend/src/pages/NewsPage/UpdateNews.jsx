@@ -8,6 +8,7 @@ import {detailFaculty, UpdateFacultyApi, GetAllFaculty} from "../../Api/FacultyA
 import {detailNews, UpdateNewsApi} from "../../Api/NewsPageApi.jsx";
 import JoditEditor from "jodit-react";
 
+import {mediaUrl} from "../../Api/mediaUrl.js";
 const SITE_URL = import.meta.env.VITE_SITE_URL;
 
 
@@ -274,7 +275,7 @@ function UpdateNews() {
                             <div className="mb-2">
                                 <p>Joriy rasm:</p>
                                 <img
-                                    src={`${SITE_URL}/${data.photo}`}
+                                    src={mediaUrl(data.photo)}
                                     alt="Joriy fakultet ikonasi"
                                     className="w-12 h-12 object-cover rounded"
                                 />

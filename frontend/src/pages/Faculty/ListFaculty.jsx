@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
 import {FaRegEdit} from "react-icons/fa";
 import {MdDelete} from "react-icons/md";
-const SITE_URL = import.meta.env.VITE_SITE_URL;
+import {mediaUrl} from "../../Api/mediaUrl.js";
 
 
 
@@ -65,7 +65,7 @@ function ListFaculty() {
                             <td className="p-3">{index + 1}</td>
                             <td className="p-3">{faculty?.faculty_name_uz}</td>
                             <td className="p-3">
-                                <img src={`${SITE_URL}/${faculty?.faculty_icon}`} alt="" className="w-12 h-12"/>
+                                <img src={mediaUrl(faculty?.faculty_icon)} alt="" className="w-12 h-12"/>
                             </td>
                             {/*<td className="p-3">{faculty?.faculty_icon}</td>*/}
                             <td className="p-3">
