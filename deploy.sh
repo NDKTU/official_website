@@ -53,8 +53,10 @@ docker compose build "${SERVICES[@]}"
 echo "==> 3/4 Передаю изменившиеся образы"
 for s in "${SERVICES[@]}"; do
     img="ndktu_site-$s:latest"
-    local_id=$(docker image inspect -f '{{.Id}}' "$img")
-    remote_id=$(remote "docker image inspect -f '{{.Id}}' $img 2>/dev/null || true")
+    # Сравниваем слои, а не .Id: при разных хранилищах образов (containerd локально,
+    # классическое на сервере) .Id одного и того же образа отличается.
+    local_id=$(docker image inspect -f '{{json .RootFS.Layers}}' "$img" | md5sum)
+    remote_id=$(remote "docker image inspect -f '{{json .RootFS.Layers}}' $img 2>/dev/null | md5sum")
     if [ "$local_id" = "$remote_id" ]; then
         echo "   $s: без изменений"
     else
