@@ -1,0 +1,40 @@
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.api.v1.services.file_services import save_file_upload, UPLOAD_DIR
+from src.base.db import get_db
+from src.models import User, Uploads
+# from src.api.v1.services.uploud_img import save_file
+# from src.security import get_current_user
+from fastapi.responses import JSONResponse
+from fastapi import Request
+import os
+from dotenv import load_dotenv
+router = APIRouter()
+
+
+@router.post("/upload")
+async def upload_file_func(
+    upload_file: UploadFile = File(...),   # frontend "upload_file" nomi bilan yuboradi
+    # current_user: User = Depends(get_current_user),  # TEMP: auth vaqtincha o'chirildi, frontend tuzatilgach qaytariladi
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        # Faylni saqlash
+        file_path = await save_file_upload(upload_file)
+
+        # Bazaga yozish
+        new_file = Uploads(upload_file=file_path)
+        db.add(new_file)
+        await db.commit()
+        await db.refresh(new_file)
+
+        # Faylni URL qilib qaytarish
+        file_url = f"{os.getenv('URL')}/{file_path}"
+
+        return JSONResponse(content={"file_url": file_url}, status_code=200)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fayl yuklashda xatolik: {str(e)}")
