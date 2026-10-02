@@ -1,0 +1,8 @@
+.venv
+.env
+__pycache__
+*.pyc
+uploads
+upload_files
+uvicorn.log
+.local-admin-credentials
