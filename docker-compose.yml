@@ -27,7 +27,7 @@ services:
       DB_PORT: 5432
     command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
     ports:
-      - "127.0.0.1:${BACKEND_PORT:-8040}:8000"
+      - "${BACKEND_BIND:-127.0.0.1}:${BACKEND_PORT:-8040}:8000"
     volumes:
       - uploads:/app/uploads
       - upload_files:/app/upload_files
@@ -43,7 +43,7 @@ services:
         VITE_SITE_URL: ${VITE_SITE_URL:-/v1}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${FRONTEND_PORT:-5180}:80"
+      - "${FRONTEND_BIND:-127.0.0.1}:${FRONTEND_PORT:-5180}:80"
     depends_on:
       - backend
 

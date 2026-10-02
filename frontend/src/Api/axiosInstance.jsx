@@ -1,14 +1,14 @@
 import axios from "axios";
 
 import toast from "react-hot-toast";
-const API_URL =  import.meta.env.VITE_API_URL;
 
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import {refreshAccessToken} from "./LoginApi.jsx";
 // export const API_URL = "http://127.0.0.2:8000/v1";
+// baseURL не задаём: все вызовы уже передают полный адрес `${API_URL}/...`.
+// С относительным VITE_API_URL (например "/v1") baseURL давал бы "/v1/v1/...".
 const axiosInstance = axios.create({
-    baseURL: API_URL,
     headers: {
         "Content-Type": "application/json",
     },
