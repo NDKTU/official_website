@@ -2,6 +2,7 @@
 
 const API_URL =  import.meta.env.VITE_API_URL;
 import axiosInstance from "./axiosInstance";
+import {getPaged} from "./pagination.jsx";
 
 export const CreateCategoryPageApi = async (categoryPageDate) => {
     console.log(categoryPageDate)
@@ -36,6 +37,8 @@ export const GetAllCategoryPage = async () => {
     const allCategoryPage = await axiosInstance.get(`${API_URL}/page/get_pages`);
     return allCategoryPage.data;
 };
+export const GetCategoryPagePaged = (page) =>
+    getPaged(axiosInstance, `${API_URL}/page/get_pages`, page);
 export const DeleteCategoryPage = async (categoryPageId) => {
     const CategoryPage = await axiosInstance.delete(
         `${API_URL}/page/delete_page/${categoryPageId}`

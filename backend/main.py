@@ -21,6 +21,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Total-Count"],
     allow_origins=[
         "https://dashboard.nsumt.uz",
         "https://www.dashboard.nsumt.uz",

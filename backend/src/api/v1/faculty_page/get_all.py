@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy import select, Result
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
 from src.models import FacultyPage, Faculty
+from src.pagination import Pagination, paginate
 
 router = APIRouter()
 
@@ -37,9 +38,11 @@ async def get_faculty_pages(faculty_id: int, db: AsyncSession = Depends(get_db))
 @router.get('/get_all_pages')
 async def get_all_pages(
         # faculty_id: int,
+        pagination: Pagination = Depends(),
+        response: Response = None,
         db: AsyncSession = Depends(get_db)
 ):
-    stmt = await db.execute(
+    query = (
         select(FacultyPage.id.label('id'),
                FacultyPage.name_uz.label('name_uz'),
                FacultyPage.name_ru.label('name_ru'),
@@ -54,7 +57,9 @@ async def get_all_pages(
                Faculty.name_uz.label('faculty_name_uz'),
                Faculty.id.label('faculty_id'),
                ).outerjoin(Faculty)
+        .order_by(FacultyPage.id)
     )
+    stmt = await db.execute(await paginate(db, query, pagination, response))
 
     results = stmt.fetchall()
 

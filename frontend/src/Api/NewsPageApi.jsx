@@ -3,12 +3,15 @@ import axios from "axios";
 
 const API_URL =  import.meta.env.VITE_API_URL;
 import axiosInstance from "./axiosInstance";
+import {getPaged} from "./pagination.jsx";
 
 
 export const GetAllNews = async () => {
     const response = await axios.get(`${API_URL}/news/get_news`);
     return response.data;
 };
+export const GetNewsPaged = (page) =>
+    getPaged(axios, `${API_URL}/news/get_news`, page);
 
 export const CreateNewsApi = async (newsData) => {
     console.log(newsData);

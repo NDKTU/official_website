@@ -1,5 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 import axiosInstance from "./axiosInstance";
+import {getPaged} from "./pagination.jsx";
 
 export const CreateDepartmentPageApi = async (departmentPageData) => {
     try {
@@ -31,6 +32,8 @@ export const GetAllDepartmentPage = async () => {
     const response = await axiosInstance.get(`${API_URL}/department_page/get_all_pages`);
     return response.data;
 };
+export const GetDepartmentPagePaged = (page) =>
+    getPaged(axiosInstance, `${API_URL}/department_page/get_all_pages`, page);
 export const DeleteDepartmentPage = async (departmentPageId) => {
     const response = await axiosInstance.delete(
         `${API_URL}/department_page/delete_page/${departmentPageId}`

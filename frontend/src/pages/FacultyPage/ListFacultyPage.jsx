@@ -1,19 +1,18 @@
 import React, {useState} from "react";
-import {useQuery, useMutation} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
 import {FaRegEdit} from "react-icons/fa";
 import {MdDelete} from "react-icons/md";
 import {DeleteCategoryPage, GetAllCategoryPage} from "../../Api/CategoryPageApi.jsx";
-import {DeleteFacultyPage, GetAllFacultyPage} from "../../Api/FacultyPageApi.jsx";
+import {DeleteFacultyPage, GetFacultyPagePaged} from "../../Api/FacultyPageApi.jsx";
+import {usePagedQuery} from "../../hooks/usePagedQuery.jsx";
+import Pagination from "../../components/Pagination.jsx";
 
 function ListFacultyPage() {
     const [isModalOpen, setIsModalOpen] = useState(null);
-    const {isError, isSuccess, isLoading, data, error, refetch} = useQuery({
-        queryKey: ["list-faculty-page"],
-        queryFn: GetAllFacultyPage,
-    });
+    const {data, refetch, page, pageCount, total, offset, setPage} = usePagedQuery("list-faculty-page", GetFacultyPagePaged);
 
     const facultyPageMutation = useMutation({
         mutationKey: ["category-page-delete"],
@@ -69,7 +68,7 @@ function ListFacultyPage() {
                         {data?.map((page, index) => {
                             return (
                                 <tr className="border-t" key={page?.id}>
-                                    <td className="p-3 ">{index + 1}</td>
+                                    <td className="p-3 ">{offset + index + 1}</td>
                                     <td className="p-3 ">{page?.page_name_uz}</td>
                                     <td className="p-3 ">{page?.faculty_name_uz}</td>
 
@@ -127,6 +126,7 @@ function ListFacultyPage() {
                         </tbody>
                     </table>
                 </div>
+                <Pagination page={page} pageCount={pageCount} total={total} onChange={setPage}/>
             </div>
         </div>
     );

@@ -1,19 +1,18 @@
 import React, {useState} from "react";
-import {useQuery, useMutation} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
 import {FaRegEdit} from "react-icons/fa";
 import {MdDelete} from "react-icons/md";
 import {DeleteCategoryPage, GetAllCategoryPage} from "../../Api/CategoryPageApi.jsx";
-import {DeleteNews, GetAllNews} from "../../Api/NewsPageApi.jsx";
+import {DeleteNews, GetNewsPaged} from "../../Api/NewsPageApi.jsx";
+import {usePagedQuery} from "../../hooks/usePagedQuery.jsx";
+import Pagination from "../../components/Pagination.jsx";
 
 function ListNewsPage() {
     const [isModalOpen, setIsModalOpen] = useState(null);
-    const {isError, isSuccess, isLoading, data, error, refetch} = useQuery({
-        queryKey: ["list-news-page"],
-        queryFn: GetAllNews,
-    });
+    const {data, refetch, page, pageCount, total, offset, setPage} = usePagedQuery("list-news-page", GetNewsPaged);
 
     const newsPageMutation = useMutation({
         mutationKey: ["news-page-delete"],
@@ -69,7 +68,7 @@ function ListNewsPage() {
                         {data?.map((page, index) => {
                             return (
                                 <tr className="border-t" key={page?.news_id}>
-                                    <td className="p-3 ">{index + 1}</td>
+                                    <td className="p-3 ">{offset + index + 1}</td>
                                     <td className="p-3 ">{page?.title_uz}</td>
                                     <td className="p-3 ">
                                         {page?.news_time.slice(0, 10)}
@@ -130,6 +129,7 @@ function ListNewsPage() {
                         </tbody>
                     </table>
                 </div>
+                <Pagination page={page} pageCount={pageCount} total={total} onChange={setPage}/>
             </div>
         </div>
     );

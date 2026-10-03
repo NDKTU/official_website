@@ -1,15 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.base.db import get_db
 from src.models import Page, Category
+from src.pagination import Pagination, paginate
 
 router = APIRouter()
 
 
 @router.get('/get_pages')
-async def get_page(db: AsyncSession = Depends(get_db)):
-    stmt = await db.execute(
+async def get_page(pagination: Pagination = Depends(),
+                   response: Response = None,
+                   db: AsyncSession = Depends(get_db)):
+    query = (
         select(Page.id.label('page_id'),
                Page.name_uz.label('name_uz'),
                Page.name_ru.label('name_ru'),
@@ -24,7 +27,9 @@ async def get_page(db: AsyncSession = Depends(get_db)):
                Category.name_uz.label('category_name_uz'),
                Category.id.label('category_id'),
                ).outerjoin(Category)
+        .order_by(Page.id)
     )
+    stmt = await db.execute(await paginate(db, query, pagination, response))
 
     results = stmt.fetchall()
 

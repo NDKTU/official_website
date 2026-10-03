@@ -1,15 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
 from src.models import News
+from src.pagination import Pagination, paginate
 
 router = APIRouter()
 
 @router.get('/get_news')
-async def get_news(db: AsyncSession = Depends(get_db)):
-    stmt = await db.execute(
+async def get_news(pagination: Pagination = Depends(),
+                   response: Response = None,
+                   db: AsyncSession = Depends(get_db)):
+    query = (
         select(
             News.id.label('news_id'),
             News.title_uz.label('title_uz'),
@@ -23,6 +26,7 @@ async def get_news(db: AsyncSession = Depends(get_db)):
         )
         .order_by(News.id.desc())
     )
+    stmt = await db.execute(await paginate(db, query, pagination, response))
     results = stmt.fetchall()
 
     return [
