@@ -47,4 +47,4 @@ async def update_news(
     except HTTPException:
         raise
     except Exception:
-        return {"Yuklashda xatolik"}
+        raise HTTPException(status_code=500, detail="Yuklashda xatolik")

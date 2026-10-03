@@ -45,4 +45,4 @@ async def update_faculty(
     except HTTPException:
         raise
     except Exception:
-        return {"Yuklashda xatolik"}
+        raise HTTPException(status_code=500, detail="Yuklashda xatolik")

@@ -1,196 +1,70 @@
-import React, {useState} from "react";
-import {NavLink, useLocation} from "react-router-dom";
-import {
-    Home,
-    ChevronRight,
-    ChevronDown,
+import { Link, useLocation } from "react-router-dom";
+import { ArrowUpRight, ChevronRight, X, GraduationCap } from "lucide-react";
+import HemisLogo from "./HemisLogo";
+import { navigation, isNavigationActive } from "../data/navigation";
 
-} from "lucide-react";
-import { SiHomeassistantcommunitystore } from "react-icons/si";
-import { TbCategoryPlus } from "react-icons/tb";
-import { FcDepartment } from "react-icons/fc";
-import { RiPagesFill } from "react-icons/ri";
-import { PiNewspaperClippingBold } from "react-icons/pi";
-import { FaPager } from "react-icons/fa6";
-
-function Sidebar({isOpen}) {
-    const location = useLocation();
-    const [expandedCategories, setExpandedCategories] = useState(["/"]);
-
-    const toggleCategory = (category) => {
-        setExpandedCategories((prev) =>
-            prev.includes(category)
-                ? prev.filter((c) => c !== category)
-                : [...prev, category]
-        );
-    };
-
-    let menuCategories;
-    menuCategories = [
-        {
-            id: "main",
-            items: [{icon: Home, label: "Bosh sahifa", path: "/"}],
-        },
-        {
-            id: "faculty",
-            // title: "Faculty",
-            items: [
-                // {icon: RiFolderAddLine, label: "Fakultet qo'shish", path: "/create-faculty"},
-                {icon: SiHomeassistantcommunitystore, label: "Fakultetlar", path: "/list-faculty"},
-            ],
-        },
-        {
-            id: "faculty_page",
-            items: [
-                {icon: FaPager , label: "Fakultet sahifalar", path: "/list-faculty-page"},
-            ],
-        },
-        {
-            id: "category",
-            // title: "Category",
-            items: [
-                // {icon: RiFolderAddLine, label: "Kategory qo'shish", path: "/create-category"},
-                {icon: TbCategoryPlus , label: "Kategoriyalar", path: "/list-category"},
-            ],
-        },
-        {
-            id: "category_page",
-            // title: "Kategoriya page",
-            items: [
-                // {icon: RiFolderAddLine, label: "Page qo'shish", path: "/create-category-page"},
-                {icon: RiPagesFill , label: "Kategoriya sahifalar", path: "/list-category-page"},
-            ],
-        },
-        {
-            id: "department",
-            // title: "Kafedralar",
-            items: [
-                // {icon: RiFolderAddLine, label: "Kafedra qo'shish", path: "/create-department"},
-                {icon: FcDepartment , label: "Kafedralar", path: "/list-department"},
-            ],
-        },
-        {
-            id: "department_page",
-            // title: "Kafedralar",
-            items: [
-                // {icon: RiFolderAddLine, label: "Kafedra qo'shish", path: "/create-department"},
-                {icon: FcDepartment , label: "Kafedra sahifalari", path: "/list-department-page"},
-            ],
-        },
-        {
-            id: "news_page",
-            items: [
-                {icon: PiNewspaperClippingBold , label: "Yangiliklar", path: "/list-news-page"},
-            ],
-        },
-
-        // {
-        //     id: "academics",
-        //     title: "O'quv jarayoni",
-        //     items: [
-        //         {icon: BookOpen, label: "O'quv reja", path: "/study-plan"},
-        //         {icon: Calendar, label: "Dars jadvali", path: "/schedule"},
-        //         {icon: Users, label: "Guruhlar", path: "/groups"},
-        //         {icon: GraduationCap, label: "Fanlar", path: "/subjects"},
-        //         {icon: ClipboardList, label: "Nazoratlar", path: "/controls"},
-        //         {icon: Award, label: "Reyting daftarcha", path: "/rating-book"},
-        //         {icon: BookCheck, label: "Davomatlar", path: "/attendance"},
-        //         {icon: BookCheck, label: "Department", path: "/department"},
-        //     ],
-        // },
-        // {
-        //     id: "documents",
-        //     title: "Hujjatlar",
-        //     items: [
-        //         {icon: ScrollText, label: "Arizalar", path: "/applications"},
-        //         {icon: FileText, label: "Qaydnomalar", path: "/records"},
-        //         {icon: Building2, label: "Shartnomalar", path: "/contracts"},
-        //     ],
-        // },
-        // {
-        //     id: "finance",
-        //     title: "Moliya",
-        //     items: [
-        //         {icon: CreditCard, label: "To'lovlar", path: "/payments"},
-        //         {icon: Wallet, label: "Stipendiya", path: "/scholarship"},
-        //     ],
-        // },
-        // {
-        //     id: "settings",
-        //     title: "Sozlamalar",
-        //     items: [
-        //         {icon: UserCircle, label: "Profil", path: "/profile"},
-        //         {icon: Settings, label: "Tizim", path: "/settings"},
-        //     ],
-        // },
-    ];
-
-    return (
-        <aside
-            className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-white shadow-lg transition-all duration-300 ${
-                isOpen ? "w-64" : "w-20"
-            } z-10 overflow-y-auto`}
-        >
-            <nav className="p-4">
-                {menuCategories.map((category) => (
-                    <div key={category.id} className="mb-4">
-                        {category.title && isOpen && (
-                            <button
-                                onClick={() => toggleCategory(category.id)}
-                                className="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-gray-500"
-                            >
-                                {category.title}
-                                {expandedCategories.includes(category.id) ? (
-                                    <ChevronDown className="h-4 w-4"/>
-                                ) : (
-                                    <ChevronRight className="h-4 w-4"/>
-                                )}
-                            </button>
-                        )}
-                        <ul
-                            className={`space-y-1 ${
-                                category.title &&
-                                !expandedCategories.includes(category.id) &&
-                                isOpen
-                                    ? "hidden"
-                                    : ""
-                            }`}
-                        >
-                            {category.items.map((item, index) => (
-                                <li key={index}>
-                                    <NavLink
-                                        to={item.path}
-                                        className={({isActive}) => `
-                      flex items-center p-3 rounded-lg transition-colors
-                      ${
-                                            isActive
-                                                ? "bg-blue-50 text-[#2557A7]"
-                                                : "text-gray-700 hover:bg-gray-100"
-                                        }
-                    `}
-                                    >
-                                        <item.icon
-                                            className={`h-5 w-5 ${
-                                                location.pathname === item.path
-                                                    ? "text-[#2557A7]"
-                                                    : "text-gray-500"
-                                            }`}
-                                        />
-                                        <span className={`ml-3 ${!isOpen ? "hidden" : ""}`}>
-                      {item.label}
-                    </span>
-                                        {location.pathname === item.path && isOpen && (
-                                            <ChevronRight className="ml-auto h-4 w-4 text-[#2557A7]"/>
-                                        )}
-                                    </NavLink>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </nav>
-        </aside>
-    );
+export default function Sidebar({ isOpen, mobileOpen, onClose }) {
+  const { pathname } = useLocation();
+  return (
+    <>
+      {mobileOpen && (
+        <button
+          className="sidebar-backdrop"
+          aria-label="Menyuni yopish"
+          onClick={onClose}
+        />
+      )}
+      <aside
+        id="main-navigation"
+        className={`sidebar ${isOpen ? "" : "sidebar-collapsed"} ${mobileOpen ? "sidebar-mobile-open" : ""}`}
+      >
+        <div className="sidebar-brand">
+          <Link to="/" onClick={onClose} aria-label="NSUMT bosh sahifa">
+            <HemisLogo />
+          </Link>
+          <button
+            className="icon-button mobile-close"
+            onClick={onClose}
+            aria-label="Menyuni yopish"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        <nav aria-label="Asosiy navigatsiya">
+          {navigation.map((item) => (
+            <div key={item.path}>
+              {item.group && <p className="nav-section">{item.group}</p>}
+              <Link
+                to={item.path}
+                title={item.label}
+                onClick={onClose}
+                aria-current={
+                  isNavigationActive(item, pathname) ? "page" : undefined
+                }
+                className={`nav-item ${isNavigationActive(item, pathname) ? "active" : ""}`}
+              >
+                <item.icon size={21} strokeWidth={1.7} />
+                <span>{item.label}</span>
+                <ChevronRight className="nav-arrow" size={15} />
+              </Link>
+            </div>
+          ))}
+        </nav>
+        <div className="sidebar-note">
+          <span className="sidebar-note-icon">
+            <GraduationCap size={25} />
+          </span>
+          <strong>Universitet yangiliklari</strong>
+          <p>So‘nggi xabarlarni saytga joylang.</p>
+          <Link to="/create-news-page" onClick={onClose}>
+            Yangilik qo‘shish <ArrowUpRight size={16} />
+          </Link>
+        </div>
+        <div className="sidebar-bottom">
+          <span className="status-dot" />
+          <span>NSUMT · Administrator</span>
+        </div>
+      </aside>
+    </>
+  );
 }
-
-export default Sidebar;

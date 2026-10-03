@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, Form, UploadFile, File
+from fastapi import APIRouter, Depends, Form, HTTPException, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.v1.services.uploud_img import save_file
@@ -23,7 +23,9 @@ async def add_page(
         photo: UploadFile = File(None),
         current_user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db)):
-    photo_path = await save_file(photo) if photo else None
+    if not photo:
+        raise HTTPException(status_code=400, detail="Rasm yuklash majburiy")
+    photo_path = await save_file(photo)
     time_parsed = datetime.now(timezone.utc)
     new_news = News(
         title_uz=title_uz,
