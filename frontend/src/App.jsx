@@ -1,25 +1,20 @@
-import React, {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    useLocation, useNavigate, Navigate,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
 } from "react-router-dom";
-import {Menu as MenuIcon, Bell} from "lucide-react";
-import HemisLogo from "./components/HemisLogo";
+import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
-import Schedule from "./pages/Schedule";
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 import LoginPage from "./pages/LoginPage.jsx";
 
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import {logout} from "./Api/LoginApi.jsx";
+import { logout } from "./Api/LoginApi.jsx";
 
 import CreateFaculty from "./pages/Faculty/CreateFaculty.jsx";
 import ListFaculty from "./pages/Faculty/ListFaculty.jsx";
@@ -44,303 +39,283 @@ import CreateDepartmentPage from "./pages/DepartmentPage/CreateDepartmentPage.js
 import ListDepartmentPage from "./pages/DepartmentPage/ListDepartmentPage.jsx";
 import UpdateDepartmentPage from "./pages/DepartmentPage/UpdateDepartmentPage.jsx";
 
-function ProtectedRoute({children}) {
-    const token = JSON.parse(localStorage.getItem("token"));
-
-    const location = useLocation();
-
-    if (!token) {
-        // Agar token mavjud bo'lmasa, login sahifasiga yo'naltirish
-        return <Navigate to="/login" state={{from: location}} replace/>;
-    }
-
-    return children;
+function ProtectedRoute({ children }) {
+  let token;
+  try {
+    token = JSON.parse(localStorage.getItem("token"));
+  } catch {
+    token = null;
+  }
+  const location = useLocation();
+  if (!token?.access_token)
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  return children;
 }
 
 function App() {
-    const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const location = useLocation(); // Get current route location
-    const isLoginPage = location.pathname === "/login";
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 1023px)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 1023px)");
+    const update = () => {
+      setIsMobile(media.matches);
+      if (!media.matches) setMobileOpen(false);
     };
-    const handleClose = () => {
-        setAnchorEl(null);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const close = (event) => {
+      if (event.key === "Escape") setMobileOpen(false);
     };
-    const handleLogout = async () => {
-        await logout();
-        navigate("/login");
+    document.addEventListener("keydown", close);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", close);
     };
-    return (
-        <div className="min-h-screen bg-gray-100 flex flex-col">
-            {/* Header */}
-            {!isLoginPage && (
-                <header className="bg-[#2557A7] text-white fixed w-full z-10">
-                    <div className="px-4">
-                        <div className="flex items-center justify-between h-16">
-                            <div className="flex items-center space-x-4">
-                                <MenuIcon
-                                    className="h-6 w-6 cursor-pointer"
-                                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                                />
-                                <HemisLogo className="h-8"/>
-                            </div>
-                            <div className="flex items-center space-x-6">
-                                {/* <Globe2 className="h-5 w-5 cursor-pointer" /> */}
-                                <Bell className="h-5 w-5 cursor-pointer"/>
+  }, [mobileOpen]);
+  const toggleSidebar = () => {
+    if (isMobile) setMobileOpen((value) => !value);
+    else setIsSidebarOpen((value) => !value);
+  };
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  };
+  return (
+    <div
+      className={`app-shell ${isSidebarOpen ? "" : "is-collapsed"} ${isLoginPage ? "auth-shell" : ""}`}
+    >
+      {!isLoginPage && (
+        <>
+          <Sidebar
+            isOpen={isSidebarOpen}
+            mobileOpen={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+          />
+          <Header
+            onToggle={toggleSidebar}
+            expanded={isMobile ? mobileOpen : isSidebarOpen}
+            onLogout={handleLogout}
+          />
+        </>
+      )}
+      <main
+        id="main-content"
+        className={isLoginPage ? "auth-main" : "app-main"}
+      >
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
 
-                                <div>
-                                    <Button
-                                        id="fade-button"
-                                        aria-controls={open ? "fade-menu" : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? "true" : undefined}
-                                        onClick={handleClick}
-                                    >
-                                        <div className="flex items-center space-x-3 text-white">
-                                            <div
-                                                className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-                                                <span className="text-sm font-medium">JS</span>
-                                            </div>
-                                            <div className="hidden md:block">
-                                                <div className="text-sm font-medium">John Smith</div>
-                                                <div className="text-xs text-gray-300">Student</div>
-                                            </div>
-                                        </div>
-                                    </Button>
-                                    <Menu
-                                        id="fade-menu"
-                                        MenuListProps={{
-                                            "aria-labelledby": "fade-button",
-                                        }}
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        TransitionComponent={Fade}
-                                    >
-                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                                        <MenuItem
-                                            onClick={() => {
-                                                handleLogout();
-                                                handleClose();
-                                            }}
-                                        >
-                                            Logout
-                                        </MenuItem>
-                                    </Menu>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-            )}
-            <div className={`flex ${!isLoginPage ? "pt-16" : ""}`}>
-                {/* Show sidebar only when not on login page */}
-                {!isLoginPage && <Sidebar isOpen={isSidebarOpen}/>}
-                <main
-                    className={`flex-1 p-6 transition-all duration-300 ${
-                        !isLoginPage && isSidebarOpen
-                            ? "ml-64"
-                            : !isLoginPage
-                                ? "ml-20"
-                                : ""
-                    }`}
-                >
-                    <Routes>
-                        <Route path="/login" element={<LoginPage/>}/>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
 
-                        <Route
-                            path="/"
-                            element={
-                                <ProtectedRoute>
-                                    <Dashboard/>
-                                </ProtectedRoute>
-                            }
-                        />
+          <Route
+            path="/create-faculty"
+            element={
+              <ProtectedRoute>
+                <CreateFaculty />
+              </ProtectedRoute>
+            }
+          />
 
-                        <Route
-                            path="/create-faculty"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateFaculty/>
-                                </ProtectedRoute>
-                            }
-                        />
+          <Route
+            path="/list-faculty"
+            element={
+              <ProtectedRoute>
+                <ListFaculty />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-faculty/:facultyId"
+            element={
+              <ProtectedRoute>
+                <UpdateFaculty />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-category"
+            element={
+              <ProtectedRoute>
+                <CreateCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-category"
+            element={
+              <ProtectedRoute>
+                <ListCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-category/:categoryId"
+            element={
+              <ProtectedRoute>
+                <UpdateCategory />
+              </ProtectedRoute>
+            }
+          />
 
-                        <Route
-                            path="/list-faculty"
-                            element={
-                                <ProtectedRoute>
-                                    <ListFaculty/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-faculty/:facultyId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateFaculty/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-category"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateCategory/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-category"
-                            element={
-                                <ProtectedRoute>
-                                    <ListCategory/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-category/:categoryId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateCategory/>
-                                </ProtectedRoute>
-                            }
-                        />
+          <Route
+            path="/create-department"
+            element={
+              <ProtectedRoute>
+                <CreateDepartment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-department"
+            element={
+              <ProtectedRoute>
+                <ListDepartment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-department/:departmentId"
+            element={
+              <ProtectedRoute>
+                <UpdateDepartment />
+              </ProtectedRoute>
+            }
+          />
 
-                        <Route
-                            path="/create-department"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateDepartment/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-department"
-                            element={
-                                <ProtectedRoute>
-                                    <ListDepartment/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-department/:departmentId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateDepartment/>
-                                </ProtectedRoute>
-                            }
-                        />
+          <Route
+            path="/create-category-page"
+            element={
+              <ProtectedRoute>
+                <CreateCategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-category-page"
+            element={
+              <ProtectedRoute>
+                <ListCategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-category-page/:categoryPageId"
+            element={
+              <ProtectedRoute>
+                <UpdateCategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-news-page"
+            element={
+              <ProtectedRoute>
+                <CreateNews />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-news-page"
+            element={
+              <ProtectedRoute>
+                <ListNewsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-news-page/:newsId"
+            element={
+              <ProtectedRoute>
+                <UpdateNews />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-faculty-page"
+            element={
+              <ProtectedRoute>
+                <CreateFacultyPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-faculty-page"
+            element={
+              <ProtectedRoute>
+                <ListFacultyPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-faculty-page/:facultyPageId"
+            element={
+              <ProtectedRoute>
+                <UpdateFacultyPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-department-page"
+            element={
+              <ProtectedRoute>
+                <CreateDepartmentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-department-page"
+            element={
+              <ProtectedRoute>
+                <ListDepartmentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-department-page/:departmentPageId"
+            element={
+              <ProtectedRoute>
+                <UpdateDepartmentPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
 
-                        <Route
-                            path="/create-category-page"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateCategoryPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-category-page"
-                            element={
-                                <ProtectedRoute>
-                                    <ListCategoryPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-category-page/:categoryPageId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateCategoryPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-news-page"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateNews/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-news-page"
-                            element={
-                                <ProtectedRoute>
-                                    <ListNewsPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-news-page/:newsId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateNews/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-faculty-page"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateFacultyPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-faculty-page"
-                            element={
-                                <ProtectedRoute>
-                                    <ListFacultyPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-faculty-page/:facultyPageId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateFacultyPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-department-page"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateDepartmentPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/list-department-page"
-                            element={
-                                <ProtectedRoute>
-                                    <ListDepartmentPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/update-department-page/:departmentPageId"
-                            element={
-                                <ProtectedRoute>
-                                    <UpdateDepartmentPage/>
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
-
-                    <Toaster/>
-                </main>
-            </div>
-        </div>
-    );
+        {!isLoginPage && (
+          <footer className="app-footer">
+            <span>
+              © {new Date().getFullYear()} NSUMT. Barcha huquqlar himoyalangan.
+            </span>
+            <span>Universitet boshqaruv paneli</span>
+          </footer>
+        )}
+        <Toaster
+          toastOptions={{ style: { borderRadius: "12px", fontSize: "14px" } }}
+        />
+      </main>
+    </div>
+  );
 }
 
 export default App;

@@ -1,12 +1,19 @@
-import React from "react";
+import { GraduationCap } from "lucide-react";
 
-function HemisLogo({ className = "" }) {
+export default function HemisLogo({ className = "", compact = false }) {
   return (
-    <div className={`flex items-center ${className}`}>
-      <span className="text-xl font-bold">Admin</span>
-      <span className="text-md ml-2">NSUMT</span>
+    <div className={`brand ${className}`}>
+      <span className="brand-icon">
+        <GraduationCap size={27} strokeWidth={1.8} />
+      </span>
+      {!compact && (
+        <span className="brand-copy">
+          <strong>
+            NSUMT<span>.</span>
+          </strong>
+          <small>Boshqaruv paneli</small>
+        </span>
+      )}
     </div>
   );
 }
-
-export default HemisLogo;

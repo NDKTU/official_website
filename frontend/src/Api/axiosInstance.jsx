@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import {refreshAccessToken} from "./LoginApi.jsx";
+import {logout, refreshAccessToken} from "./LoginApi.jsx";
 // export const API_URL = "http://127.0.0.2:8000/v1";
 // baseURL не задаём: все вызовы уже передают полный адрес `${API_URL}/...`.
 // С относительным VITE_API_URL (например "/v1") baseURL давал бы "/v1/v1/...".
