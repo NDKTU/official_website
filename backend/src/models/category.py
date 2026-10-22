@@ -11,6 +11,7 @@ class Category(Base):
     name_uz=Column(String, nullable=False)
     name_ru=Column(String, nullable=False)
     name_en=Column(String, nullable=False)
+    order = Column(Integer, nullable=False, default=0, server_default='0')
 
     page = relationship("Page", back_populates="category")
     # section=relationship("Section", back_populates="category")

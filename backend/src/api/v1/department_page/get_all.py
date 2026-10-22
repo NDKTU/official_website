@@ -16,7 +16,7 @@ async def get_all_pages(
     response: Response = None,
     db: AsyncSession = Depends(get_db)
     ):
-    stmt = select(DepartmentPage).order_by(DepartmentPage.id)
+    stmt = select(DepartmentPage).order_by(DepartmentPage.order, DepartmentPage.name_uz, DepartmentPage.id)
     stmt = (await paginate(db, stmt, pagination, response)).options(
         joinedload(DepartmentPage.department)
     )

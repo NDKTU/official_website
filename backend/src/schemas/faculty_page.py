@@ -19,11 +19,13 @@ class FacultyPageBase(BaseModel):
 
 
 class FacultyPageCreateRequest(FacultyPageBase):
-    
+    order: Optional[int] = None
+
     model_config = ConfigDict(from_attributes=True)
 
 
 class FacultyPageResponse(FacultyPageBase):
 
     id: int
+    order: int
     model_config = ConfigDict(from_attributes=True)

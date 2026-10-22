@@ -24,10 +24,12 @@ async def get_faculty_pages(faculty_id: int, db: AsyncSession = Depends(get_db))
                FacultyPage.text_ru.label('text_ru'),
                FacultyPage.text_en.label('text_en'),
                FacultyPage.time.label('time'),
+               FacultyPage.order.label('order'),
                Faculty.name_uz.label('faculty_name_uz'),
                Faculty.id.label('faculty_id'),
                ).outerjoin(Faculty)
         .where(faculty_id==FacultyPage.faculty_id)
+        .order_by(FacultyPage.order, FacultyPage.name_uz, FacultyPage.id)
     )
     result = await db.execute(stmt)
     rows = result.mappings().all()   # 🔑 bu yerda RowMapping qaytadi
@@ -54,10 +56,11 @@ async def get_all_pages(
                FacultyPage.text_ru.label('text_ru'),
                FacultyPage.text_en.label('text_en'),
                FacultyPage.time.label('time'),
+               FacultyPage.order.label('order'),
                Faculty.name_uz.label('faculty_name_uz'),
                Faculty.id.label('faculty_id'),
                ).outerjoin(Faculty)
-        .order_by(FacultyPage.id)
+        .order_by(FacultyPage.order, FacultyPage.name_uz, FacultyPage.id)
     )
     stmt = await db.execute(await paginate(db, query, pagination, response))
 
@@ -76,6 +79,7 @@ async def get_all_pages(
             page_text_ru=item.text_ru,
             page_text_en=item.text_en,
             page_time=item.time,
+            page_order=item.order,
             faculty_name_uz=item.faculty_name_uz,
             faculty_id=item.faculty_id
             # category_name_uz=item.category_name_uz

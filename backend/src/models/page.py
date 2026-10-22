@@ -20,5 +20,6 @@ class Page(Base):
     text_en=Column(String, nullable=False)
     time = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
+    order = Column(Integer, nullable=False, default=0, server_default='0')
 
     category = relationship("Category", back_populates="page")

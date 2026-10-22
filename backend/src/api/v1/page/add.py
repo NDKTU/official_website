@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.base.db import get_db
 from src.models import User,  Page
+from src.ordering import next_order
 from src.schemas.page import PageCreateRequest
 from src.security import get_current_user, has_access
 
@@ -23,6 +24,10 @@ async def add_page(
     # if page:
     #     raise HTTPException(status_code=404, detail="Bunaqa page mavjud")
 
+    order = create_page.order
+    if order is None:
+        order = await next_order(db, Page)
+
     new_page = Page(
         name_uz=create_page.name_uz,
         name_ru=create_page.name_ru,
@@ -34,7 +39,8 @@ async def add_page(
         text_ru=create_page.text_ru,
         text_en=create_page.text_en,
         time=create_page.time,
-        category_id=create_page.category_id
+        category_id=create_page.category_id,
+        order=order,
     )
     db.add(new_page)
     await db.commit()

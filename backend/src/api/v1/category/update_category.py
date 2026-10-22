@@ -26,6 +26,8 @@ async def update_category(category_id: int,
     category.name_uz = category_data.name_uz
     category.name_ru = category_data.name_ru
     category.name_en = category_data.name_en
+    if category_data.order is not None:
+        category.order = category_data.order
 
 
     await db.commit()

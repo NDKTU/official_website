@@ -58,6 +58,7 @@ function ListCategoryPage() {
                             <th className="p-3 text-gray-600">N</th>
                             <th className="p-3 text-gray-600"> Sub Kategoriya nomi</th>
                             <th className="p-3 text-gray-600"> Kategoriya nomi</th>
+                            <th className="p-3 text-gray-600">Tartib raqami</th>
                             <th className="p-3 text-gray-600 flex justify-center ">
                                 Action
                             </th>
@@ -70,6 +71,7 @@ function ListCategoryPage() {
                                     <td className="p-3 ">{offset + index + 1}</td>
                                     <td className="p-3 ">{page?.page_name_uz}</td>
                                     <td className="p-3 ">{page?.category_name_uz}</td>
+                                    <td className="p-3 ">{page?.page_order}</td>
 
                                     <td className="p-3">
                                         <div className="flex justify-center">

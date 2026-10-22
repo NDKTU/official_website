@@ -2,6 +2,8 @@ import React, {useEffect, useMemo, useRef} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FieldError from "../../components/FieldError.jsx";
+import {submitWithErrors} from "../../utils/formErrors.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { detailCategoryPage, UpdateCategoryPageApi} from "../../Api/CategoryPageApi.jsx";
@@ -22,7 +24,7 @@ function UpdateCategoryPage() {
     });
 
     const { data } = useQuery({
-        queryKey: ["category-page-detail"],
+        queryKey: ["category-page-detail", categoryPageId],
         queryFn: () => detailCategoryPage(categoryPageId),
     });
     const categoryPageMutation = useMutation({
@@ -47,6 +49,7 @@ function UpdateCategoryPage() {
             text_ru: data?.text_ru || "",
             text_en: data?.text_en || "",
             categoryId: data?.category_id || "",
+            order: data?.order ?? "",
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
@@ -59,6 +62,11 @@ function UpdateCategoryPage() {
             text_uz: Yup.string().required("!!! To'ldirish shart"),
             text_ru: Yup.string().required("!!! To'ldirish shart"),
             text_en: Yup.string().required("!!! To'ldirish shart"),
+            order: Yup.number()
+                .typeError("!!! Butun son kiriting")
+                .integer("!!! Butun son kiriting")
+                .min(0, "!!! Manfiy bo'lmasin")
+                .required("!!! To'ldirish shart"),
             // categoryId: Yup.string().required("!!! To'ldirish shart"),
         }),
         onSubmit: (values) => {
@@ -74,6 +82,7 @@ function UpdateCategoryPage() {
                 text_ru: values.text_ru,
                 text_en: values.text_en,
                 categoryId: values.categoryId,
+                order: Number(values.order),
                 categoryPageId,
             };
             categoryPageMutation.mutate(categoryPageDate);
@@ -193,9 +202,23 @@ function UpdateCategoryPage() {
             <div className="bg-white rounded-lg shadow">
                 <div className="p-4 border-b bg-gray-50  ">
                     <form
-                        onSubmit={formik.handleSubmit}
+                        onSubmit={submitWithErrors(formik)}
                         className="grid grid-cols-1 gap-3"
                     >
+                        <div className="w-full">
+                            <label htmlFor="order"
+                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Tartib raqami (Order)
+                            </label>
+                            <FieldError formik={formik} name="order"/>
+                            <input type="number"
+                                   id="order"
+                                   name="order"
+                                   min="0"
+                                   step="1"
+                                   {...formik.getFieldProps("order")}
+                                   className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                        </div>
                         <div className="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-6"  >
                             <div className="w-1/3">
                                 <label
@@ -204,6 +227,7 @@ function UpdateCategoryPage() {
                                 >
                                     O'zgartirilayotgan page uzb nomi
                                 </label>
+                                <FieldError formik={formik} name="name_uz"/>
                                 <input
                                     type="text"
                                     id="name_uz"
@@ -219,6 +243,7 @@ function UpdateCategoryPage() {
                                 >
                                     O'zgartirilayotgan page rus nomi
                                 </label>
+                                <FieldError formik={formik} name="name_ru"/>
                                 <input
                                     type="text"
                                     id="name_ru"
@@ -234,6 +259,7 @@ function UpdateCategoryPage() {
                                 >
                                     O'zgartirilayotgan page eng nomi
                                 </label>
+                                <FieldError formik={formik} name="name_en"/>
                                 <input
                                     type="text"
                                     id="name_en"
@@ -264,6 +290,7 @@ function UpdateCategoryPage() {
                                 )}
                             </Select>
                         </FormControl>
+                        <FieldError formik={formik} name="categoryId"/>
                         <div className="w-full">
                             <label
                                 htmlFor="title_uz"
@@ -271,6 +298,7 @@ function UpdateCategoryPage() {
                             >
                                 Post uzbekcha mavzusini kiriting
                             </label>
+                            <FieldError formik={formik} name="title_uz"/>
                             <input
                                 type="text"
                                 id="title_uz"
@@ -286,6 +314,7 @@ function UpdateCategoryPage() {
                             >
                                 Post uzbekcha mavzusini kiriting
                             </label>
+                            <FieldError formik={formik} name="title_ru"/>
                             <input
                                 type="text"
                                 id="title_ru"
@@ -301,6 +330,7 @@ function UpdateCategoryPage() {
                             >
                                 Post uzbekcha mavzusini kiriting
                             </label>
+                            <FieldError formik={formik} name="title_en"/>
                             <input
                                 type="text"
                                 id="title_en"
@@ -314,6 +344,7 @@ function UpdateCategoryPage() {
                             <label htmlFor="text_uz" className="text-xl mb-2 mt-7">
                                 Post uzbekcha matnini kiriting
                             </label>
+                            <FieldError formik={formik} name="text_uz"/>
                             <JoditEditor
                                 ref={editorRef}
                                 config={config}
@@ -328,6 +359,7 @@ function UpdateCategoryPage() {
                             <label htmlFor="text_ru" className="text-xl mb-2 mt-7">
                                 Post ruscha matnini kiriting
                             </label>
+                            <FieldError formik={formik} name="text_ru"/>
                             <JoditEditor
                                 ref={editorRef}
                                 config={config}
@@ -341,6 +373,7 @@ function UpdateCategoryPage() {
                             <label htmlFor="text_en" className="text-xl mb-2 mt-7">
                                 Post englizcha matnini kiriting
                             </label>
+                            <FieldError formik={formik} name="text_en"/>
                             <JoditEditor
                                 ref={editorRef}
                                 config={config}

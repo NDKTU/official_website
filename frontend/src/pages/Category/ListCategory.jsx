@@ -51,6 +51,7 @@ function ListCategory() {
                     <tr className="text-left bg-gray-50">
                         <th className="p-3 text-gray-600">№</th>
                         <th className="p-3 text-gray-600">Kategoriya uzb</th>
+                        <th className="p-3 text-gray-600">Tartib raqami</th>
                         {/*<th className="p-3 text-gray-600">Kategoriya en</th>*/}
                         {/*<th className="p-3 text-gray-600">Kategoriya ru</th>*/}
                         <th className="p-3 text-gray-600 text-center">Action</th>
@@ -62,6 +63,7 @@ function ListCategory() {
                         return (<tr className="border-t" key={category?.category_id}>
                             <td className="p-3 ">{index + 1}</td>
                             <td className="p-3 ">{category?.category_name_uz}</td>
+                            <td className="p-3 ">{category?.category_order}</td>
                             {/*<td className="p-3">{category?.category_name_ru}</td>*/}
                             {/*<td className="p-3">{category?.category_name_en}</td>*/}
                             <td className="p-3">

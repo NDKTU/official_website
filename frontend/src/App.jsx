@@ -32,6 +32,9 @@ import UpdateCategoryPage from "./pages/CategoryPage/UpdateCategoryPage.jsx";
 import ListNewsPage from "./pages/NewsPage/ListNewsPage.jsx";
 import CreateNews from "./pages/NewsPage/CreateNews.jsx";
 import UpdateNews from "./pages/NewsPage/UpdateNews.jsx";
+import CreateCarousel from "./pages/Carousel/CreateCarousel.jsx";
+import ListCarousel from "./pages/Carousel/ListCarousel.jsx";
+import UpdateCarousel from "./pages/Carousel/UpdateCarousel.jsx";
 import CreateFacultyPage from "./pages/FacultyPage/CreateFacultyPage.jsx";
 import ListFacultyPage from "./pages/FacultyPage/ListFacultyPage.jsx";
 import UpdateFacultyPage from "./pages/FacultyPage/UpdateFacultyPage.jsx";
@@ -253,6 +256,30 @@ function App() {
             }
           />
           <Route
+            path="/create-carousel"
+            element={
+              <ProtectedRoute>
+                <CreateCarousel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/list-carousel"
+            element={
+              <ProtectedRoute>
+                <ListCarousel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-carousel/:carouselId"
+            element={
+              <ProtectedRoute>
+                <UpdateCarousel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/create-faculty-page"
             element={
               <ProtectedRoute>
@@ -311,7 +338,7 @@ function App() {
           </footer>
         )}
         <Toaster
-          toastOptions={{ style: { borderRadius: "12px", fontSize: "14px" } }}
+          toastOptions={{ style: { borderRadius: "12px", fontSize: "14px", whiteSpace: "pre-line" } }}
         />
       </main>
     </div>

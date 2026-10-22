@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,6 +19,7 @@ async def update_faculty(
     name_uz: str = Form(...),
     name_ru: str = Form(...),
     name_en: str = Form(...),
+    order: Optional[int] = Form(None),
     faculty_icon: UploadFile = File(None),
     # faculty_file: UploadFile = File(None),
     current_user: User = Depends(get_current_user),
@@ -36,6 +39,8 @@ async def update_faculty(
         faculty.name_uz = name_uz
         faculty.name_ru = name_ru
         faculty.name_en = name_en
+        if order is not None:
+            faculty.order = order
 
 
         await db.commit()

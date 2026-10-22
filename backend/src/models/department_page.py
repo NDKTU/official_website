@@ -19,5 +19,6 @@ class DepartmentPage(Base):
     time = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
 
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
+    order = Column(Integer, nullable=False, default=0, server_default='0')
 
     department = relationship("Department", back_populates="department_page")

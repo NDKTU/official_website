@@ -37,6 +37,8 @@ async def update_page(
     page.text_en = department_page_data.text_en
     page.time = department_page_data.time
     page.department_id = department_page_data.department_id
+    if department_page_data.order is not None:
+        page.order = department_page_data.order
     await db.commit()
     await db.refresh(page)
     return {"message": "Page muvaffaqiyatli yangilandi"}

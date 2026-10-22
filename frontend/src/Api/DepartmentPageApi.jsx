@@ -3,29 +3,23 @@ import axiosInstance from "./axiosInstance";
 import {getPaged} from "./pagination.jsx";
 
 export const CreateDepartmentPageApi = async (departmentPageData) => {
-    try {
-        const response = await axiosInstance.post(
-            `${API_URL}/department_page/add_page`,
-            {
-                name_uz: departmentPageData.name_uz,
-                name_ru: departmentPageData.name_ru,
-                name_en: departmentPageData.name_en,
-                title_uz: departmentPageData.title_uz,
-                title_ru: departmentPageData.title_ru,
-                title_en: departmentPageData.title_en,
-                text_uz: departmentPageData.text_uz,
-                text_ru: departmentPageData.text_ru,
-                text_en: departmentPageData.text_en,
-                department_id: departmentPageData.departmentId
-            },
-        );
-        return await response.data;
-    } catch (error) {
-        if (error.response && error.response.data.message) {
-            throw new Error(error.response.data.message);
-        }
-        throw new Error(error.response.data.detail);
-    }
+    const response = await axiosInstance.post(
+        `${API_URL}/department_page/add_page`,
+        {
+            name_uz: departmentPageData.name_uz,
+            name_ru: departmentPageData.name_ru,
+            name_en: departmentPageData.name_en,
+            title_uz: departmentPageData.title_uz,
+            title_ru: departmentPageData.title_ru,
+            title_en: departmentPageData.title_en,
+            text_uz: departmentPageData.text_uz,
+            text_ru: departmentPageData.text_ru,
+            text_en: departmentPageData.text_en,
+            department_id: departmentPageData.departmentId,
+            order: departmentPageData.order
+        },
+    );
+    return await response.data;
 };
 
 export const GetAllDepartmentPage = async () => {
@@ -58,7 +52,8 @@ export const UpdateDepartmentPageApi = async (departmentPageData) => {
             text_uz: departmentPageData.text_uz,
             text_ru: departmentPageData.text_ru,
             text_en: departmentPageData.text_en,
-            department_id: departmentPageData.departmentId
+            department_id: departmentPageData.departmentId,
+            order: departmentPageData.order
         }
     );
     return response.data;

@@ -10,6 +10,7 @@ class Faculty(Base):
     name_ru = Column(String, nullable=False)
     name_en = Column(String, nullable=False)
     faculty_icon = Column(String, nullable=True)
+    order = Column(Integer, nullable=False, default=0, server_default='0')
 
     department = relationship("Department", back_populates="faculty")
     

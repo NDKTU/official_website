@@ -7,6 +7,7 @@ import {
   FileText,
   Newspaper,
   BookOpen,
+  Images,
 } from "lucide-react";
 
 export const navigation = [
@@ -54,6 +55,12 @@ export const navigation = [
     path: "/list-news-page",
     icon: Newspaper,
     match: "news-page",
+  },
+  {
+    label: "Karusel",
+    path: "/list-carousel",
+    icon: Images,
+    match: "carousel",
   },
 ];
 

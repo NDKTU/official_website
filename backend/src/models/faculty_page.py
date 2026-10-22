@@ -20,6 +20,7 @@ class FacultyPage(Base):
     time = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
 
     faculty_id = Column(Integer, ForeignKey("faculties.id"), nullable=True)
+    order = Column(Integer, nullable=False, default=0, server_default='0')
 
     
     faculty = relationship("Faculty", back_populates="faculty_page")

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FieldError from "../../components/FieldError.jsx";
+import {submitWithErrors} from "../../utils/formErrors.js";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {  GetAllFaculty } from "../../Api/FacultyApi.jsx";
@@ -63,7 +65,7 @@ function CreateDepartment() {
             <div className="bg-white rounded-lg shadow">
                 <div className="p-4 border-b bg-gray-50  ">
                     <form
-                        onSubmit={formik.handleSubmit}
+                        onSubmit={submitWithErrors(formik)}
                         className="grid grid-cols-1 gap-3"
                     >
                         <div className="w-full">
@@ -73,6 +75,7 @@ function CreateDepartment() {
                             >
                                 Kafedra uzb nomi
                             </label>
+                            <FieldError formik={formik} name="name_uz"/>
                             <input
                                 type="text"
                                 id="name_uz"
@@ -88,6 +91,7 @@ function CreateDepartment() {
                             >
                                 Kafedra rus nomi
                             </label>
+                            <FieldError formik={formik} name="name_ru"/>
                             <input
                                 type="text"
                                 id="name_ru"
@@ -103,6 +107,7 @@ function CreateDepartment() {
                             >
                                 Kafedra eng nomi
                             </label>
+                            <FieldError formik={formik} name="name_en"/>
                             <input
                                 type="text"
                                 id="name_en"
@@ -133,6 +138,7 @@ function CreateDepartment() {
                                 )}
                             </Select>
                         </FormControl>
+                        <FieldError formik={formik} name="facultyId"/>
 
                         <button
                             type="submit"

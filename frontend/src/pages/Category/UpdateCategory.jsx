@@ -2,6 +2,8 @@ import React, {useEffect} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FieldError from "../../components/FieldError.jsx";
+import {submitWithErrors} from "../../utils/formErrors.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {detailCategory, UpdateCategoryApi} from "../../Api/CategoryApi.jsx";
@@ -13,7 +15,7 @@ function UpdateCategory() {
     // console.log(categoryId);
     const navigate = useNavigate();
     const {data} = useQuery({
-        queryKey: ["category-detail"],
+        queryKey: ["category-detail", categoryId],
         queryFn: () => detailCategory(categoryId),
     });
     const categoryMutation = useMutation({
@@ -31,12 +33,18 @@ function UpdateCategory() {
             name_uz: data?.name_uz || "",
             name_ru: data?.name_ru || "",
             name_en: data?.name_en || "",
+            order: data?.order ?? "",
         },
         enableReinitialize: true,//update qilishda qayta render qiladi 1 ta kechmasligi uchun
         validationSchema: Yup.object({
             name_uz: Yup.string().required("!!! To'ldirish shart"),
             name_ru: Yup.string().required("!!! To'ldirish shart"),
-            name_en: Yup.string().required("!!! To'ldirish shart")
+            name_en: Yup.string().required("!!! To'ldirish shart"),
+            order: Yup.number()
+                .typeError("!!! Butun son kiriting")
+                .integer("!!! Butun son kiriting")
+                .min(0, "!!! Manfiy bo'lmasin")
+                .required("!!! To'ldirish shart"),
         }),
         onSubmit: (values) => {
             // setFormData(values);
@@ -44,6 +52,7 @@ function UpdateCategory() {
                 name_uz: values.name_uz,
                 name_ru: values.name_ru,
                 name_en: values.name_en,
+                order: Number(values.order),
                 categoryId,
             };
             categoryMutation.mutate(categoryDate);
@@ -65,41 +74,58 @@ function UpdateCategory() {
         <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b bg-gray-50  ">
                 <form
-                    onSubmit={formik.handleSubmit}
+                    onSubmit={submitWithErrors(formik)}
                     className="grid grid-cols-1 gap-3"
                 >
                     <div className="w-full">
-                        <label htmlFor="name"
+                        <label htmlFor="name_uz"
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan kategoriya uzb nomi
                         </label>
+                        <FieldError formik={formik} name="name_uz"/>
                         <input type="text"
-                               id="name"
+                               id="name_uz"
                                name="name_uz"
                                {...formik.getFieldProps("name_uz")}
                                className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
                     <div className="w-full">
-                        <label htmlFor="name"
+                        <label htmlFor="name_ru"
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan kategoriya rus nomi
                         </label>
+                        <FieldError formik={formik} name="name_ru"/>
                         <input type="text"
-                               id="name"
+                               id="name_ru"
                                name="name_ru"
                                {...formik.getFieldProps("name_ru")}
                                className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
                     <div className="w-full">
-                        <label htmlFor="name"
+                        <label htmlFor="name_en"
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan kategoriya eng nomi
                         </label>
+                        <FieldError formik={formik} name="name_en"/>
 
                         <input type="text"
-                               id="name"
+                               id="name_en"
                                name="name_en"
                                {...formik.getFieldProps("name_en")}
+                               className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                    </div>
+                    <div className="w-full">
+                        <label htmlFor="order"
+                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Tartib raqami (Order)
+                        </label>
+                        <FieldError formik={formik} name="order"/>
+                        <input type="number"
+                               id="order"
+                               name="order"
+                               min="0"
+                               step="1"
+                               {...formik.getFieldProps("order")}
                                className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                     </div>
                     <button type="submit"

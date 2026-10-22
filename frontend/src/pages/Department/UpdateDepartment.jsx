@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FieldError from "../../components/FieldError.jsx";
+import {submitWithErrors} from "../../utils/formErrors.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { detailDepartment, UpdateDepartmentApi } from "../../Api/DepartmentApi";
@@ -72,7 +74,7 @@ function UpdateDepartment() {
             <div className="bg-white rounded-lg shadow">
                 <div className="p-4 border-b bg-gray-50  ">
                     <form
-                        onSubmit={formik.handleSubmit}
+                        onSubmit={submitWithErrors(formik)}
                         className="grid grid-cols-1 gap-3"
                     >
                         <div className="w-full">
@@ -82,6 +84,7 @@ function UpdateDepartment() {
                             >
                                 O'zgartirilayotgan kafedra uzb nomi
                             </label>
+                            <FieldError formik={formik} name="name_uz"/>
                             <input
                                 type="text"
                                 id="name_uz"
@@ -97,6 +100,7 @@ function UpdateDepartment() {
                             >
                                 O'zgartirilayotgan kafedra rus nomi
                             </label>
+                            <FieldError formik={formik} name="name_ru"/>
                             <input
                                 type="text"
                                 id="name_ru"
@@ -112,6 +116,7 @@ function UpdateDepartment() {
                             >
                                 O'zgartirilayotgan kafedra eng nomi
                             </label>
+                            <FieldError formik={formik} name="name_en"/>
                             <input
                                 type="text"
                                 id="name_en"
@@ -141,6 +146,7 @@ function UpdateDepartment() {
                                 )}
                             </Select>
                         </FormControl>
+                        <FieldError formik={formik} name="facultyId"/>
                         <button
                             type="submit"
                             className="focus:outline-none w-full text-white bg-[#3697A5] hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"

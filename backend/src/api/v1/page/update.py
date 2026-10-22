@@ -36,6 +36,8 @@ async def update_page(
     page.text_en = page_data.text_en
     page.time = page_data.time
     page.category_id = page_data.category_id
+    if page_data.order is not None:
+        page.order = page_data.order
     await db.commit()
     await db.refresh(page)
     return {"message": "Page muvaffaqiyatli yangilandi"}

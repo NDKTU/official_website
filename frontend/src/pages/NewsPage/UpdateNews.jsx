@@ -2,6 +2,8 @@ import React, {useEffect, useMemo, useRef} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FieldError from "../../components/FieldError.jsx";
+import {submitWithErrors} from "../../utils/formErrors.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {detailFaculty, UpdateFacultyApi, GetAllFaculty} from "../../Api/FacultyApi.jsx";
@@ -184,14 +186,15 @@ function UpdateNews() {
         <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b bg-gray-50  ">
                 <form
-                    onSubmit={formik.handleSubmit}
+                    onSubmit={submitWithErrors(formik)}
                     className="grid grid-cols-1 gap-3"
                 >
                     <div className="w-full">
-                        <label htmlFor="name"
+                        <label htmlFor="title_uz"
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan yangilik o'zbekcha mavzusi
                         </label>
+                        <FieldError formik={formik} name="title_uz"/>
                         <input type="text"
                                id="title_uz"
                                name="title_uz"
@@ -203,6 +206,7 @@ function UpdateNews() {
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan yangilik ruscha mavzusi
                         </label>
+                        <FieldError formik={formik} name="title_ru"/>
                         <input type="text"
                                id="title_ru"
                                name="title_ru"
@@ -214,6 +218,7 @@ function UpdateNews() {
                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             O'zgartirilayotgan yangilik inglizcha mavzusi
                         </label>
+                        <FieldError formik={formik} name="title_en"/>
                         <input type="text"
                                id="title_en"
                                name="title_en"
@@ -225,6 +230,7 @@ function UpdateNews() {
                         <label htmlFor="text_uz" className="text-xl mb-2 mt-7">
                             Yangilik o'zbekcha matnini kiriting
                         </label>
+                        <FieldError formik={formik} name="text_uz"/>
                         <JoditEditor
                             ref={editorRef}
                             config={config}
@@ -239,6 +245,7 @@ function UpdateNews() {
                         <label htmlFor="text_ru" className="text-xl mb-2 mt-7">
                             Yangilik ruscha matnini kiriting
                         </label>
+                        <FieldError formik={formik} name="text_ru"/>
                         <JoditEditor
                             ref={editorRef}
                             config={config}
@@ -253,6 +260,7 @@ function UpdateNews() {
                         <label htmlFor="text_en" className="text-xl mb-2 mt-7">
                             Yangilik ruscha matnini kiriting
                         </label>
+                        <FieldError formik={formik} name="text_en"/>
                         <JoditEditor
                             ref={editorRef}
                             config={config}
@@ -267,10 +275,11 @@ function UpdateNews() {
                     <div className="w-full">
                         <label
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            htmlFor="faculty_icon"
+                            htmlFor="photo"
                         >
                             Fakultet ikonkasini yuklang
                         </label>
+                        <FieldError formik={formik} name="photo"/>
                         {data?.photo ? (
                             <div className="mb-2">
                                 <p>Joriy rasm:</p>

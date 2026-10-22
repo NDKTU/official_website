@@ -20,12 +20,15 @@ class PageBase(BaseModel):
 
 
 class PageCreateRequest(PageBase):
+    order: Optional[int] = None
+
     class Config:
         from_attributes = True
 
 
 class PageCreateResponse(PageBase):
     id: int
+    order: int
 
     class Config:
         from_attributes = True

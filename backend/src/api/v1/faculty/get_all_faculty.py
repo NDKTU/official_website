@@ -16,8 +16,9 @@ async def get_category(db: AsyncSession = Depends(get_db)):
                Faculty.name_uz.label('name_uz'),
                Faculty.name_ru.label('name_ru'),
                Faculty.name_en.label('name_en'),
-               Faculty.faculty_icon.label('faculty_icon')
-               )
+               Faculty.faculty_icon.label('faculty_icon'),
+               Faculty.order.label('order')
+               ).order_by(Faculty.order, Faculty.name_uz, Faculty.id)
     )
 
     results = stmt.fetchall()
@@ -29,6 +30,7 @@ async def get_category(db: AsyncSession = Depends(get_db)):
             faculty_name_ru=item.name_ru,
             faculty_name_en=item.name_en,
             faculty_icon=item.faculty_icon,
+            faculty_order=item.order,
         )
         for item in results
     ]

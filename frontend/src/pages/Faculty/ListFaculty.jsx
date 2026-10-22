@@ -54,6 +54,7 @@ function ListFaculty() {
                         <th className="p-3 text-gray-600">№</th>
                         <th className="p-3 text-gray-600">Fakultet uzb</th>
                         <th className="p-3 text-gray-600">Ikonka</th>
+                        <th className="p-3 text-gray-600">Tartib raqami</th>
                         {/*<th className="p-3 text-gray-600">Kategoriya ru</th>*/}
                         <th className="p-3 text-gray-600 text-center">Action</th>
 
@@ -67,6 +68,7 @@ function ListFaculty() {
                             <td className="p-3">
                                 <img src={mediaUrl(faculty?.faculty_icon)} alt="" className="w-12 h-12"/>
                             </td>
+                            <td className="p-3">{faculty?.faculty_order}</td>
                             {/*<td className="p-3">{faculty?.faculty_icon}</td>*/}
                             <td className="p-3">
                                 <div className="flex justify-center">

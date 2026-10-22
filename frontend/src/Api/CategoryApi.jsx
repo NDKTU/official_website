@@ -10,23 +10,17 @@ export const GetAllCategory = async () => {
 };
 
 export const CreateCategoryApi = async (categoryDate) => {
-    try {
-        const response = await axiosInstance.post(
-            `${API_URL}/category/add_category`,
-            {
-                name_uz: categoryDate.name_uz,
-                name_ru: categoryDate.name_ru,
-                name_en: categoryDate.name_en,
-            },
-        );
+    const response = await axiosInstance.post(
+        `${API_URL}/category/add_category`,
+        {
+            name_uz: categoryDate.name_uz,
+            name_ru: categoryDate.name_ru,
+            name_en: categoryDate.name_en,
+            order: categoryDate.order,
+        },
+    );
 
-        return await response.data;
-    } catch (error) {
-        if (error.response && error.response.data.message) {
-            throw new Error(error.response.data.message);
-        }
-        throw new Error(error.response.data.detail);
-    }
+    return await response.data;
 };
 export const DeleteCategory = async (categoryId) => {
     const Category = await axiosInstance.delete(
@@ -54,6 +48,7 @@ export const UpdateCategoryApi = async (categoryDate) => {
             name_uz: categoryDate.name_uz,
             name_ru: categoryDate.name_ru,
             name_en: categoryDate.name_en,
+            order: categoryDate.order,
         },
     );
     return response.data;

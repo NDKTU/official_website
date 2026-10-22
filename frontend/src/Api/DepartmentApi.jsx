@@ -2,24 +2,17 @@ const API_URL =  import.meta.env.VITE_API_URL;
 import axiosInstance from "./axiosInstance";
 import {getPaged} from "./pagination.jsx";
 export const CreateDepartmentApi = async (departmentDate) => {
-    try {
-        const response = await axiosInstance.post(
-            `${API_URL}/department/add_department`,
-            {
-                name_uz: departmentDate.name_uz,
-                name_ru: departmentDate.name_ru,
-                name_en: departmentDate.name_en,
-                faculty_id: departmentDate.facultyId
-            },
-        );
+    const response = await axiosInstance.post(
+        `${API_URL}/department/add_department`,
+        {
+            name_uz: departmentDate.name_uz,
+            name_ru: departmentDate.name_ru,
+            name_en: departmentDate.name_en,
+            faculty_id: departmentDate.facultyId
+        },
+    );
 
-        return await response.data;
-    } catch (error) {
-        if (error.response && error.response.data.message) {
-            throw new Error(error.response.data.message);
-        }
-        throw new Error(error.response.data.detail);
-    }
+    return await response.data;
 };
 export const GetAllDepartment = async () => {
     const allDepartment = await axiosInstance.get(`${API_URL}/department/get_departments`);

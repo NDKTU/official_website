@@ -19,11 +19,13 @@ class DepartmentPageBase(BaseModel):
 
 
 class DepartmentPageCreateRequest(DepartmentPageBase):
-    
+    order: Optional[int] = None
+
     model_config = ConfigDict(from_attributes=True)
 
 
 class DepartmentPageResponse(DepartmentPageBase):
 
     id: int
+    order: int
     model_config = ConfigDict(from_attributes=True)

@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import {logout, refreshAccessToken} from "./LoginApi.jsx";
+import {getApiErrorMessage} from "../utils/formErrors.js";
 // export const API_URL = "http://127.0.0.2:8000/v1";
 // baseURL не задаём: все вызовы уже передают полный адрес `${API_URL}/...`.
 // С относительным VITE_API_URL (например "/v1") baseURL давал бы "/v1/v1/...".
@@ -52,5 +53,15 @@ axiosInstance.interceptors.request.use(async (config) => {
 
     return config;
 }, Promise.reject);
+
+// Backend xatosini (jumladan 422 validatsiya ro'yxatini) error.message ga yozadi,
+// shunda sahifalardagi toast.error(error.message) aniq sababni ko'rsatadi.
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        error.message = getApiErrorMessage(error);
+        return Promise.reject(error);
+    },
+);
 
 export default axiosInstance;

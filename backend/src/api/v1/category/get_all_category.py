@@ -15,8 +15,9 @@ async def get_category(db: AsyncSession = Depends(get_db)):
         select(Category.id.label('category_id'),
                Category.name_uz.label('name_uz'),
                Category.name_ru.label('name_ru'),
-               Category.name_en.label('name_en')
-               ).order_by(Category.id)
+               Category.name_en.label('name_en'),
+               Category.order.label('order')
+               ).order_by(Category.order, Category.name_uz, Category.id)
     )
 
     results = stmt.fetchall()
@@ -27,6 +28,7 @@ async def get_category(db: AsyncSession = Depends(get_db)):
             category_name_uz=item.name_uz,
             category_name_ru=item.name_ru,
             category_name_en=item.name_en,
+            category_order=item.order,
         )
         for item in results
     ]

@@ -24,10 +24,11 @@ async def get_page(pagination: Pagination = Depends(),
                Page.text_ru.label('text_ru'),
                Page.text_en.label('text_en'),
                Page.time.label('time'),
+               Page.order.label('order'),
                Category.name_uz.label('category_name_uz'),
                Category.id.label('category_id'),
                ).outerjoin(Category)
-        .order_by(Page.id)
+        .order_by(Page.order, Page.name_uz, Page.id)
     )
     stmt = await db.execute(await paginate(db, query, pagination, response))
 
@@ -46,6 +47,7 @@ async def get_page(pagination: Pagination = Depends(),
             page_text_ru=item.text_ru,
             page_text_en=item.text_en,
             page_time=item.time,
+            page_order=item.order,
             category_name_uz=item.category_name_uz,
             category_id=item.category_id
             # category_name_uz=item.category_name_uz

@@ -10,7 +10,8 @@ __all__ = (
     "DepartmentPage",
     "Apply",
     "Agency",
-    "AgencyPage"
+    "AgencyPage",
+    "Carousel"
 )
 
 from .category import Category
@@ -25,3 +26,4 @@ from .department_page import DepartmentPage
 from .apply import Apply
 from .agency import Agency
 from .agency_page import AgencyPage
+from .carousel import Carousel

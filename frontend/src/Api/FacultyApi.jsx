@@ -9,32 +9,28 @@ export const GetAllFaculty = async () => {
 };
 
 export const CreateFacultyApi = async (facultyDate) => {
-    try {
-        const formData = new FormData();
-        formData.append("name_uz", facultyDate.name_uz || "");
-        formData.append("name_ru", facultyDate.name_ru || "");
-        formData.append("name_en", facultyDate.name_en || "");
-        if (facultyDate.faculty_icon) {
-            formData.append('faculty_icon', facultyDate.faculty_icon);
-            console.log("Fayl nomi:", facultyDate.faculty_icon);
-        }
-        console.log(formData)
-        const response = await axiosInstance.post(
-            `${API_URL}/faculty/add_faculty`, formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data", // Fayl yuborish uchun zarur sarlavha
-                },
-            }
-        );
-        console.log("Serverdan kelgan javob:", response.data)
-        return await response.data;
-    } catch (error) {
-        if (error.response && error.response.data.message) {
-            throw new Error(error.response.data.message);
-        }
-        throw new Error(error.response.data.detail);
+    const formData = new FormData();
+    formData.append("name_uz", facultyDate.name_uz || "");
+    formData.append("name_ru", facultyDate.name_ru || "");
+    formData.append("name_en", facultyDate.name_en || "");
+    if (facultyDate.order !== null && facultyDate.order !== undefined && facultyDate.order !== "") {
+        formData.append("order", facultyDate.order);
     }
+    if (facultyDate.faculty_icon) {
+        formData.append('faculty_icon', facultyDate.faculty_icon);
+        console.log("Fayl nomi:", facultyDate.faculty_icon);
+    }
+    console.log(formData)
+    const response = await axiosInstance.post(
+        `${API_URL}/faculty/add_faculty`, formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data", // Fayl yuborish uchun zarur sarlavha
+            },
+        }
+    );
+    console.log("Serverdan kelgan javob:", response.data)
+    return await response.data;
 };
 export const DeleteFaculty = async (facultyId) => {
     const Faculty = await axiosInstance.delete(
@@ -67,37 +63,32 @@ export const detailFaculty = async (facultyId) => {
 // };
 
 export const UpdateFacultyApi = async (facultyId, facultyDate) => {
-    try {
-        const formData = new FormData();
-        formData.append("name_uz", facultyDate.name_uz || ""); // O‘zbekcha nom
-        formData.append("name_ru", facultyDate.name_ru || ""); // Ruscha nom
-        formData.append("name_en", facultyDate.name_en || ""); // Inglizcha nom
-
-        // Agar yangi fakultet ikonkasi yuklansa, uni qo‘shish
-        if (facultyDate.faculty_icon) {
-            formData.append('faculty_icon', facultyDate.faculty_icon);
-        }
-
-        console.log("Yuborilayotgan ma'lumotlar:");
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
-
-        const response = await axiosInstance.put(
-            `${API_URL}/faculty/update_faculty/${facultyId}`, formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data", // Fayl jo‘natish uchun kerakli sarlavha
-                },
-            }
-        );
-        console.log("Serverdan kelgan javob:", response.data);
-        return await response.data; // Serverdan kelgan javobni qaytarish
-    } catch (error) {
-        // Xatolikni tekshirish va foydalanuvchiga tushunarli xabar qaytarish
-        if (error.response && error.response.data.message) {
-            throw new Error(error.response.data.message);
-        }
-        throw new Error(error.response.data.detail || "Fakultetni yangilashda xatolik yuz berdi");
+    const formData = new FormData();
+    formData.append("name_uz", facultyDate.name_uz || ""); // O‘zbekcha nom
+    formData.append("name_ru", facultyDate.name_ru || ""); // Ruscha nom
+    formData.append("name_en", facultyDate.name_en || ""); // Inglizcha nom
+    if (facultyDate.order !== null && facultyDate.order !== undefined && facultyDate.order !== "") {
+        formData.append("order", facultyDate.order);
     }
+
+    // Agar yangi fakultet ikonkasi yuklansa, uni qo‘shish
+    if (facultyDate.faculty_icon) {
+        formData.append('faculty_icon', facultyDate.faculty_icon);
+    }
+
+    console.log("Yuborilayotgan ma'lumotlar:");
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    const response = await axiosInstance.put(
+        `${API_URL}/faculty/update_faculty/${facultyId}`, formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data", // Fayl jo‘natish uchun kerakli sarlavha
+            },
+        }
+    );
+    console.log("Serverdan kelgan javob:", response.data);
+    return await response.data; // Serverdan kelgan javobni qaytarish
 };
